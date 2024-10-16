@@ -10,6 +10,7 @@
       // "@remote/*": ["src/remote/*"],
       "@constansts": ["src/constansts/index"],
       "@constansts/*": ["src/constansts/index/*"],
+      "@context/*": ["src/context/*"],
       // "@models/*": ["src/models/*"],
       // "@utils/*": ["src/utils/*"],
       "@hooks/*": ["src/hooks/*"]

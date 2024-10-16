@@ -1,0 +1,27 @@
+
+
+
+
+/// 라운지 글 작성 - communitypage  /api/v1/lounge
+
+export const postLounge = async (data: I.LoungePost) => {
+  const res = await baseAxios.post("/api/v1/lounge", data);
+  return res.data;
+};
+
+
+/// 라운지 글 상세 조회(loungepage 글 리스트/comminitypage 글 폼)  /api/v1/lounge/{postId}
+export const getLounge = async ({ queryKey }: { queryKey: [string, string] }) => {
+  const [, postId] = queryKey;
+  const res = await baseAxios.get(`/api/v1/lounge/${postId}`);
+  return res.data;
+};
+
+
+/// 게시판 글 전체 조회 - loungepage/// /api/v1/lounge/all
+
+export const getAllLounge = async ({ queryKey }: { queryKey: [string, I.GetAllLounge] }) => {
+  const [_key, { page, size, sort }] = queryKey;
+  const res = await baseAxios.get(`/api/v1/lounge/all?page=${page}&size=${size}&sort=${sort}`);
+  return res.data;
+};

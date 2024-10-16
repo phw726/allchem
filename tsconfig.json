@@ -22,6 +22,16 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "next/types/**/*.ts", "src/@types", "**/*.d.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "next/types/**/*.ts",
+    "src/@types",
+    "**/*.d.ts",
+    "src/api/axios.tst",
+    "src/pages/api/query/useDataListQuery.tx",
+    "src/context/AuthContext.tㅌ"
+  ],
   "exclude": ["./tsconfig.paths.json"]
 }

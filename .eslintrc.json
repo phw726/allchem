@@ -1,3 +1,14 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "extends": [
+    "plugin:prettier/recommended","prettier",
+    "next/core-web-vitals", "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended", "next/typescript"],
+    "parser": "@typescript-eslint/parser",
+"plugins": ["prettier"],
+
+  "parserOptions": {
+    "ecmaVersion": "latest"
+  }
+
 }

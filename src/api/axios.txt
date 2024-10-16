@@ -1,0 +1,52 @@
+import axios, { AxiosRequestConfig, CreateAxiosDefaults } from 'axios'
+
+/// https://msds.kosha.or.kr/openapi/service/msdschem/chemlist?serviceKey=ZSgY4Z9J5jdMcoE6zqfvJ1uVH8yTLMiodL4E2vhGaTf4vlzRsP61dwv62Hs6%2BZdK4uHzyGuUOA1Il3X7oEXaUw%3D%3D&searchWrd=염산 구아니딘&searchCnd=0
+
+const API_KEY = process.env.CHEM_DATA_API
+
+const AXIOS_OPTIONS: CreateAxiosDefaults = {
+  /// cors문제 해결
+  withCredentials: true,
+  baseURL: `https://msds.kosha.or.kr/openapi/service/msdschem/chemlist`,
+}
+
+const instance = axios.create(AXIOS_OPTIONS)
+
+instance.interceptors.response.use(
+  response => response,
+  async error => {
+    const {
+      config,
+      response: { status, data },
+    } = error
+
+    return Promise.reject(error)
+  },
+)
+
+// 검색 API 요청을 보내는 함수
+export const fetchChemData = async (
+  searchWrd: string,
+  searchCnd: string,
+  pageNum: number = 1, // 기본 페이지 번호는 1
+  pageSize: number = 10, // 기본 페이지 크기는 10개)
+) => {
+  try {
+    // API 요청 시 필요한 파라미터를 설정
+    const params = {
+      serviceKey: API_KEY,
+      searchWrd, // 사용자가 입력한 검색어
+      searchCnd, // 검색 조건
+      pageNum, // 페이지 번호
+      pageSize, // 페이지당 항목 수
+    }
+
+    // 요청 보내기
+    const response = await instance.get('', { params })
+    return response.data
+  } catch (error) {
+    console.error('Error fetching chemical data:', error)
+    throw error
+  }
+}
+export default instance
