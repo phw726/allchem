@@ -21,7 +21,8 @@ export const ListItem = styled(Link)`
     div {
       &.item-name,
       &.item-info,
-      &.post-info {
+      &.post-info,
+      span {
         color: royalblue;
       }
     }
@@ -56,6 +57,9 @@ export const PostInfoWrapper = styled.div`
   margin-left: 10px;
   color: #22272b;
   line-height: 1.5;
+  overflow: hidden;
+  height: auto;
+  /* max-height: 140px; */
 
   & > span {
     display: flex;
@@ -75,12 +79,13 @@ export const ItemName = styled.div`
   }
 `
 export const PostName = styled.div`
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 600;
-  margin: 20px 50px 10px 0;
+  margin: 10px 50px 10px 0;
   display: flex;
   flex-direction: column;
-  /* margin-top: 3px; */
+  text-align: start;
+  overflow: hidden;
 
   &.item-name {
     color: #22272b;
@@ -99,12 +104,16 @@ export const PostInfo = styled.div`
   display: flex;
   align-items: center;
   gap: 5px;
-  margin: 3px 0;
+  overflow: hidden;
 
   &.post-info {
     color: #22272b;
-    margin: 5px 0 30px 0;
-    width: 74%;
+    margin: 8px 50px 20px 0;
+    width: auto;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    white-space: pre-wrap;
   }
 
   &.user {
@@ -112,5 +121,6 @@ export const PostInfo = styled.div`
     display: flex;
     text-align: center;
     align-items: center;
+    margin-top: 20px;
   }
 `

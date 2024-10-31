@@ -15,7 +15,16 @@ export default function FileDrop({ onFileChange }: FileDropProps) {
   const [files, setFiles] = useState<FileWithPreview[]>([]) // 업로드한 파일들
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
-    const newFiles = acceptedFiles.map(file =>
+    const MAX_FILE_SIZE = 10 * 1024 * 1024
+    const validFiles = acceptedFiles.filter(file => {
+      if (file.size > MAX_FILE_SIZE) {
+        alert(' Please attach a file of 10 MB or less.')
+        return false
+      }
+      return true
+    })
+
+    const newFiles = validFiles.map(file =>
       Object.assign(file, {
         preview: URL.createObjectURL(file),
       }),
@@ -27,7 +36,7 @@ export default function FileDrop({ onFileChange }: FileDropProps) {
     onDrop,
     accept: {
       'image/*': [], // 이미지 파일 수락
-      'application/pdf': [], // PDF 파일 수락
+      // 'application/pdf': [], // PDF 파일 수락
     },
     multiple: true,
   })
@@ -44,14 +53,35 @@ export default function FileDrop({ onFileChange }: FileDropProps) {
     )
   }
 
+  // useEffect(() => {
+  //   // 초기 파일을 렌더링할 때 onFileChange 호출
+  //   if (files.length > 0) {
+  //     onFileChange(files)
+  //   }
+  // }, [files, onFileChange])
+
   useEffect(() => {
+    // files 상태가 변경될 때만 onFileChange 호출
     onFileChange(files)
+  }, [files])
 
-    return () => {
-      files.forEach(file => URL.revokeObjectURL(file.preview))
-    }
-  }, [files, onFileChange])
+  // const uploadFiles = async (files: FileWithPreview[]) => {
+  //   const storage = getStorage()
+  //   const uploadedUrls: string[] = []
+  //   for (const file of files) {
+  //     const storageRef = ref(storage, `uploads/${file.name}`)
+  //     await uploadBytes(storageRef, file)
+  //     const downloadUrl = await getDownloadURL(storageRef)
+  //     uploadedUrls.push(downloadUrl)
+  //   }
+  //   onFileChange(uploadedUrls)
+  // }
 
+  // useEffect(() => {
+  //   if (files.length > 0) {
+  //     uploadFiles(files)
+  //   }
+  // }, [files])
   return (
     <S.DropZoneWrapper {...getRootProps()}>
       <input {...getInputProps()} />
@@ -79,7 +109,7 @@ export default function FileDrop({ onFileChange }: FileDropProps) {
           </S.PreviewWrapper>
         </S.FileList>
       ) : (
-        <S.DropText>Drop Image or PDF Files...</S.DropText>
+        <S.DropText>Drop Image Files...</S.DropText>
       )}
     </S.DropZoneWrapper>
   )

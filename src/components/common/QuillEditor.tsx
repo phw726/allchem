@@ -1,6 +1,6 @@
 import { css } from '@emotion/react'
 import dynamic from 'next/dynamic'
-import React, { forwardRef, useMemo, useState } from 'react'
+import React, { forwardRef, useEffect, useMemo, useState } from 'react'
 import 'react-quill/dist/quill.snow.css'
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
@@ -28,6 +28,7 @@ const QuillEditor = forwardRef<typeof ReactQuill | null, EditorProps>(
               },
               { background: [] },
             ],
+            ['image'],
           ],
         },
       }
@@ -50,7 +51,12 @@ const QuillEditor = forwardRef<typeof ReactQuill | null, EditorProps>(
       'background',
       'size',
       'h1',
+      'image',
     ]
+
+    useEffect(() => {
+      setEditor(value)
+    }, [value])
 
     return (
       <div>

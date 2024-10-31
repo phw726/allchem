@@ -1,4 +1,5 @@
 import { Global, ThemeProvider } from '@emotion/react'
+import { SessionProvider } from 'next-auth/react'
 import { css } from '@emotion/css'
 import { useEffect, useState } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
@@ -32,10 +33,12 @@ function App({ Component, pageProps = {} }: AppProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthContextProvider>
-        <Global styles={globalStyle} />
-        <Component {...pageProps} />
-      </AuthContextProvider>
+      <SessionProvider>
+        <AuthContextProvider>
+          <Global styles={globalStyle} />
+          <Component {...pageProps} />
+        </AuthContextProvider>
+      </SessionProvider>
     </QueryClientProvider>
   )
 }

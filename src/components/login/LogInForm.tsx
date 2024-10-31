@@ -12,7 +12,8 @@ import {
   signInWithEmailAndPassword,
 } from 'firebase/auth'
 import { useRouter } from 'next/router'
-import { app } from '../../../firebase'
+import { signIn } from 'next-auth/react'
+import app from '../../../firebase'
 
 export type LogInType = 'signup' | 'login'
 
@@ -34,20 +35,19 @@ export default function LogInForm({ type }: LoginFormProps) {
       try {
         const auth = getAuth(app)
         await createUserWithEmailAndPassword(auth, email, password)
-
-        alert('회원가입에 성공했습니다.')
+        alert('Account registered successfully.')
         route.push('/')
       } catch (error: any) {
         console.log(error)
         console.log('email', email, 'password', password)
-        alert('회원가입에 실패했습니다.')
+        alert('Failed to register. Please try again in a few minutes')
       }
     } else {
       try {
         const auth = getAuth(app)
         await signInWithEmailAndPassword(auth, email, password)
 
-        alert('로그인에 성공했습니다.')
+        alert('Success!')
         route.push('/')
       } catch (error: any) {
         alert(error?.code)
@@ -66,7 +66,7 @@ export default function LogInForm({ type }: LoginFormProps) {
         /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 
       if (!value?.match(validRegex)) {
-        setError('이메일 형식이 올바르지 않습니다.')
+        setError('The email format is incorrect.')
       } else {
         setError('')
       }
@@ -76,21 +76,21 @@ export default function LogInForm({ type }: LoginFormProps) {
       setPassword(value)
 
       if (value?.length < 6) {
-        setError('비밀번호는 6자 이상으로 입력해주세요.')
+        setError('Please enter a password of at least 6 characters.')
       } else if (passwordConfirm?.length > 0 && value !== passwordConfirm) {
-        setError('비밀번호가 일치하지 않습니다.')
+        setError('Password does not match.')
       } else {
         setError('')
       }
     }
 
-    if (name === 'password_confirm') {
+    if (name === 'passwordConfirm') {
       setPasswordConfirm(value)
 
       if (value?.length < 6) {
-        setError('비밀번호는 6자 이상으로 입력해주세요.')
+        setError('Please enter a password of at least 6 characters.')
       } else if (value !== password) {
-        setError('비밀번호가 일치하지 않습니다.')
+        setError('Password does not match.')
       } else {
         setError('')
       }
@@ -176,7 +176,10 @@ export default function LogInForm({ type }: LoginFormProps) {
         </S.SignUpWrapper>
       </S.LoginWrapper>
       <S.OAuthWrapper>
-        <S.Icon>
+        <S.Icon
+          type="button"
+          onClick={() => signIn('google', { callbackUrl: '/' })}
+        >
           <FcGoogle css={{ fontSize: '18px' }} />
           Sign In with Google
         </S.Icon>

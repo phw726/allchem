@@ -70,7 +70,7 @@ export const HeaderUtilWrapper = styled.div`
   justify-content: center;
   text-align: center;
   align-items: center;
-  color: lightgray;
+  color: darkgray;
   font-size: 12px;
   margin-right: 10px;
   flex-shrink: 0;
@@ -86,5 +86,25 @@ export const HeaderUtilItems = styled(Link)`
 
   &:hover {
     color: #22272b;
+  }
+`
+
+export const HeaderUtilButton = styled.button`
+  width: auto;
+  height: auto;
+  text-align: center;
+  align-items: center;
+  margin: 34px 0 auto;
+  color: #22272b;
+  font-weight: 400;
+  display: flex;
+  font-size: 12px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 0;
+
+  &:hover {
+    color: black;
   }
 `

@@ -6,8 +6,10 @@ import Menu from '../Menu'
 import { ILogo3 } from '../../../../public/image'
 import { LuDot } from 'react-icons/lu'
 import { css } from '@emotion/react'
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import SearchForm from '@/components/search/SearchForm'
+import { getAuth, signOut } from 'firebase/auth'
+import AuthContext from '@/context/AuthContext'
 
 export default function Header() {
   const router = useRouter()
@@ -37,28 +39,51 @@ export default function Header() {
   )
 }
 
-const HeaderItems = [
-  { href: '/login', title: 'Sign In' },
-  { href: '/likes', title: 'My Chem' },
-  { href: '/membership', title: 'Membership' },
-  { href: '/community', title: 'Community' },
-]
-
 function HeaderUtils() {
   const router = useRouter()
+  const [isLogIn, setIsLogIn] = useState(false)
+  const auth = getAuth()
+  const { user } = useContext(AuthContext)
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      setIsLogIn(!!user)
+    })
+    return () => unsubscribe()
+  }, [auth])
+
+  const handleLogout = async () => {
+    await signOut(auth)
+    router.push('/')
+  }
+
   const isActive = (path: string) =>
     router.asPath.startsWith(path) ? 'active' : undefined
 
   return (
     <S.HeaderUtilWrapper>
-      {HeaderItems.map(({ href, title }, index) => (
-        <React.Fragment key={href}>
-          <S.HeaderUtilItems href={href} className={isActive(href)}>
-            {title}
-          </S.HeaderUtilItems>
-          {index < HeaderItems.length - 1 && <LuDot css={DotStyle} />}
-        </React.Fragment>
-      ))}
+      {!isLogIn ? (
+        <S.HeaderUtilItems href="/login" className={isActive('/login')}>
+          Sign In
+        </S.HeaderUtilItems>
+      ) : (
+        <S.HeaderUtilItems href="/mypage" className={isActive('/mypage')}>
+          {user?.displayName || user?.email || 'Verified User'}
+        </S.HeaderUtilItems>
+      )}
+      <LuDot css={DotStyle} />
+
+      <S.HeaderUtilItems href="/likes">My Chem</S.HeaderUtilItems>
+      <LuDot css={DotStyle} />
+      <S.HeaderUtilItems href="/membership">Membership</S.HeaderUtilItems>
+      <LuDot css={DotStyle} />
+
+      <S.HeaderUtilItems href="/community">Community</S.HeaderUtilItems>
+      <LuDot css={DotStyle} />
+
+      <S.HeaderUtilButton as="button" onClick={handleLogout}>
+        Log out
+      </S.HeaderUtilButton>
     </S.HeaderUtilWrapper>
   )
 }

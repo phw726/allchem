@@ -104,7 +104,7 @@ export const OAuthWrapper = styled.div`
   margin-bottom: auto;
 `
 
-export const Icon = styled.div`
+export const Icon = styled.button`
   width: 200px;
   height: 40px;
   border-radius: 4px;
@@ -114,6 +114,7 @@ export const Icon = styled.div`
   cursor: pointer;
   font-size: 12px;
   font-weight: 600;
+  border: none;
   color: #fff;
   gap: 8px;
   text-align: center;

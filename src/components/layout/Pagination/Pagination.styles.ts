@@ -9,6 +9,7 @@ export const Wrapper = styled.div`
   padding-top: 90px;
   padding-bottom: 45px;
   border-top: 1px solid #e0e0e0;
+  margin: 0 20px;
   /* 
   @media (max-width: 1199px) {
     margin-top: 60px;

@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { FirebaseApp, getApp, initializeApp } from 'firebase/app'
 import 'firebase/auth'
+import { getAuth } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
 
 // export let app: FirebaseApp
@@ -15,7 +16,11 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
 }
 
-export const app = initializeApp(firebaseConfig)
+const app = initializeApp(firebaseConfig)
+export const auth = getAuth()
+export default app
+
+export const db = getFirestore(app)
 
 // try {
 //   app = getApp('app')

@@ -3,12 +3,11 @@ import * as S from './ListBody.styles'
 import { FaAngleRight } from 'react-icons/fa'
 import { css } from '@emotion/react'
 import { ILogo1 } from '../../../../public/image'
+import { dangerHTML, formatTimestamp } from '@/utils/helpers'
 
 interface ListBodyProps {
   item: {
-    id?: string
-    title?: string
-    summary?: string
+    id: string
     chemNameKor?: string
     chemId?: string
     casNo?: string
@@ -16,15 +15,25 @@ interface ListBodyProps {
     keNo?: string
     unNo?: string
     user?: string
-    date?: string // post date
+
+    ///post
+    title?: string
+    createdAt: string
+    updatedAt?: string
+    content: string
+    email?: string
+    name?: string
   }
+
   renderType: 'compound' | 'post'
 }
 
 export default function ListBody({ item, renderType }: ListBodyProps) {
-  const href =
-    renderType === 'compound' ? `/compound/${item.id}` : `/post/${item.id}`
+  const summary = dangerHTML(item.content).slice(0, 200)
 
+  const href =
+    renderType === 'compound' ? `/compound/${item.id}` : `/community/${item.id}`
+  console.log('item', item)
   return (
     <S.ListWrapper>
       <S.ListItem href={href}>
@@ -51,13 +60,20 @@ export default function ListBody({ item, renderType }: ListBodyProps) {
         ) : (
           <>
             <S.PostInfoWrapper>
-              <span>
-                <S.PostName className="item-name">{item.title}</S.PostName>
-                <S.PostInfo className="item-info user">
-                  {item.user} <LuDot css={dotStyle} /> {item.date}
+              <S.PostInfo className="item-info user">
+                {item?.email || item?.name} <LuDot css={dotStyle} />
+                {item?.updatedAt
+                  ? `${formatTimestamp(item.updatedAt)} (Edited) `
+                  : formatTimestamp(item.createdAt)}
+              </S.PostInfo>
+              <S.PostName>{item.title}</S.PostName>
+
+              {item.content && (
+                <S.PostInfo className="post-info">
+                  {summary}
+                  {summary.length === 200 && '...'}
                 </S.PostInfo>
-              </span>
-              <S.PostInfo className="post-info">{item.summary}</S.PostInfo>
+              )}
             </S.PostInfoWrapper>
           </>
         )}
