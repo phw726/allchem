@@ -5,7 +5,6 @@ import FileDrop, { FileWithPreview } from './FileDrop'
 import { addDoc, collection, doc, getDoc, updateDoc } from '@firebase/firestore'
 import { db } from '../../../../firebase'
 import { useRouter } from 'next/router'
-import { useParams } from 'next/navigation'
 import { useAuth } from '@/components/hook/useAuth'
 
 //// all : 모든글
@@ -15,6 +14,14 @@ import { useAuth } from '@/components/hook/useAuth'
 export type PostCategoryType = 'Community' | 'Q&A'
 export const CATEGORIES: PostCategoryType[] = ['Community', 'Q&A']
 
+export interface CommentType {
+  content: string
+  uid: string
+  email?: string
+  createdAt: string
+  updatedAt?: string
+}
+
 export interface PostProps {
   id?: string
   title: string
@@ -23,9 +30,9 @@ export interface PostProps {
   createdAt: string
   updatedAt?: string
   uid: string
+  comments: CommentType[]
   category: PostCategoryType
   files?: string[]
-  // comments?: CommentsInterface[];
 }
 
 export default function PostForm() {
@@ -192,6 +199,10 @@ export default function PostForm() {
   //     }
   //   }
   // }, [post])
+
+  //// TODO ////
+  //파일 첨부 시 fires storage로 업로드할 수 있도록 처리하고
+  //디테일 페이지에서 첨부파일 다운받을 수 있도록 처리.........
 
   return (
     <S.Wrapper onSubmit={handleSubmit} id="">

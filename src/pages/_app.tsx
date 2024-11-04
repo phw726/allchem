@@ -8,6 +8,7 @@ import AOS from 'aos'
 import 'aos/dist/aos.css'
 import { AppProps } from 'next/app'
 import { AuthContextProvider } from '@/context/AuthContext'
+import 'react-quill/dist/quill.snow.css'
 
 const globalStyle = css`
   * {

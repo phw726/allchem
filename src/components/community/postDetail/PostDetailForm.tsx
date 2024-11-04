@@ -6,6 +6,8 @@ import { deleteDoc, doc, getDoc } from '@firebase/firestore'
 import { db } from '../../../../firebase'
 import PostHeader from './PostHeader'
 import AuthContext from '@/context/AuthContext'
+import 'react-quill/dist/quill.snow.css'
+import Comment from '../comment/Comment'
 
 export default function PostDetailForm() {
   const [post, setPost] = useState<PostProps | null>(null)
@@ -56,19 +58,23 @@ export default function PostDetailForm() {
               {post.title}
             </S.Title>
             <S.PostInfo>
-              <S.Info>{post.email}</S.Info>
               <S.Info>
-                {post.updatedAt || post.createdAt} {post.updatedAt && 'Edited'}
+                {post.updatedAt || post.createdAt}{' '}
+                {post.updatedAt && '(Edited)'}
               </S.Info>
 
-              {post?.email === user?.email && (
-                <S.PostUtilsWrapper>
-                  <S.Edit href={`/community/post/edit/${post?.id}`}>
-                    Edit
-                  </S.Edit>
-                  <S.Delete onClick={handleDelete}>Delete</S.Delete>
-                </S.PostUtilsWrapper>
-              )}
+              <span>
+                <S.Info>{post.email}</S.Info>
+
+                {post?.email === user?.email && (
+                  <S.PostUtilsWrapper>
+                    <S.Edit href={`/community/post/edit/${post?.id}`}>
+                      Edit
+                    </S.Edit>
+                    <S.Delete onClick={handleDelete}>Delete</S.Delete>
+                  </S.PostUtilsWrapper>
+                )}
+              </span>
             </S.PostInfo>
 
             {post.content && (
@@ -76,6 +82,7 @@ export default function PostDetailForm() {
                 <div dangerouslySetInnerHTML={{ __html: post.content }} />
               </S.Content>
             )}
+            <Comment post={post} getPost={getPost} />
           </S.PostWrapper>
         </>
       ) : (

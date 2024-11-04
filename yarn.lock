@@ -1010,6 +1010,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@looop/quill-image-resize-module-react@npm:^3.1.5":
+  version: 3.1.5
+  resolution: "@looop/quill-image-resize-module-react@npm:3.1.5"
+  peerDependencies:
+    lodash: ^4.17.20
+    quill: ^1.3.7
+  checksum: 10c0/fc312527026543812fe0bece636d9996b126f231223f7323666d2d2f25d746333ecfe214c3cf7dc07d732467340f2d0ec66feb6554b8d74919fd8ce269532bbe
+  languageName: node
+  linkType: hard
+
 "@next/env@npm:13.5.6":
   version: 13.5.6
   resolution: "@next/env@npm:13.5.6"
@@ -1307,6 +1317,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/lodash@npm:^4":
+  version: 4.17.13
+  resolution: "@types/lodash@npm:4.17.13"
+  checksum: 10c0/c3d0b7efe7933ac0369b99f2f7bff9240d960680fdb74b41ed4bd1b3ca60cca1e31fe4046d9abbde778f941a41bc2a75eb629abf8659fa6c27b66efbbb0802a9
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:*":
   version: 22.7.4
   resolution: "@types/node@npm:22.7.4"
@@ -1581,9 +1598,11 @@ __metadata:
     "@firebase/app": "npm:^0.10.13"
     "@firebase/firestore": "npm:^4.7.3"
     "@firebase/storage": "npm:^0.13.3"
+    "@looop/quill-image-resize-module-react": "npm:^3.1.5"
     "@types/aos": "npm:^3.0.7"
     "@types/axios": "npm:^0.14.0"
     "@types/cors": "npm:^2"
+    "@types/lodash": "npm:^4"
     "@types/node": "npm:^20"
     "@types/react": "npm:^18"
     "@types/react-dom": "npm:^18"
@@ -1601,9 +1620,11 @@ __metadata:
     fast-xml-parser: "npm:^4.5.0"
     firebase: "npm:^10.14.1"
     framer-motion: "npm:^11.8.0"
+    lodash: "npm:^4.17.21"
     next: "npm:13"
     next-auth: "npm:^4.24.8"
     prettier: "npm:^3.3.3"
+    quill-image-resize-module-react: "npm:^3.0.0"
     react: "npm:^18"
     react-dnd: "npm:^16.0.1"
     react-dnd-html5-backend: "npm:^16.0.1"
@@ -3866,7 +3887,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:^4.17.4":
+"lodash@npm:^4.17.21, lodash@npm:^4.17.4":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: 10c0/d8cbea072bb08655bb4c989da418994b073a608dffa608b09ac04b43a791b12aeae7cd7ad919aa4c925f33b48490b5cfe6c1f71d827956071dae2e7bb3a6b74c
@@ -4500,7 +4521,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"quill@npm:^1.3.7":
+"quill-image-resize-module-react@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "quill-image-resize-module-react@npm:3.0.0"
+  dependencies:
+    lodash: "npm:^4.17.4"
+    quill: "npm:^1.2.2"
+    raw-loader: "npm:^0.5.1"
+  checksum: 10c0/7f2036aaa461edbebd3a8c44c73584be74362b5d43aaf7e4568491e9020e5616f30fb9899fc10dc7956e921bb2900187952ab5f85398a8a379b6098bfeb4bb91
+  languageName: node
+  linkType: hard
+
+"quill@npm:^1.2.2, quill@npm:^1.3.7":
   version: 1.3.7
   resolution: "quill@npm:1.3.7"
   dependencies:
@@ -4511,6 +4543,13 @@ __metadata:
     parchment: "npm:^1.1.4"
     quill-delta: "npm:^3.6.2"
   checksum: 10c0/c5d874cc8693b017a3dfd79ad6f65b1803cf54ccee7540abe059d5841902a198643acc316027d8a5914c3f2531e67981676249ea014956dd27ebfb73fd83cff0
+  languageName: node
+  linkType: hard
+
+"raw-loader@npm:^0.5.1":
+  version: 0.5.1
+  resolution: "raw-loader@npm:0.5.1"
+  checksum: 10c0/0961d64c0c21c25f8a1ecddd5bf17a4308e5d82addff11044a42c28dde35f14b34c6dbf4665adda7ce3a64922a3132785276c25e1f33c0c62689ff366ab8fb6e
   languageName: node
   linkType: hard
 

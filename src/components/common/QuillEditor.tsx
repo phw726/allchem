@@ -1,6 +1,7 @@
 import { css } from '@emotion/react'
 import dynamic from 'next/dynamic'
 import React, { forwardRef, useEffect, useMemo, useState } from 'react'
+import { Quill } from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
@@ -14,29 +15,52 @@ const QuillEditor = forwardRef<typeof ReactQuill | null, EditorProps>(
   ({ value, onChange }, ref) => {
     const [editor, setEditor] = useState(value || '')
 
-    const modules = useMemo(() => {
-      return {
+    useEffect(() => {
+      setEditor(value)
+    }, [value])
+
+    const modules = useMemo(
+      () => ({
         toolbar: {
           container: [
             [{ size: ['small', false, 'large', 'huge'] }],
             [{ align: [] }],
             ['bold', 'italic', 'underline', 'strike'],
             [{ list: 'ordered' }, { list: 'bullet' }],
-            [
-              {
-                color: [],
-              },
-              { background: [] },
-            ],
-            ['image'],
+            [{ color: [] }, { background: [] }],
+            ['image'], // 이미지 버튼 추가
           ],
+          handlers: {
+            image: () => {
+              const input = document.createElement('input')
+              input.setAttribute('type', 'file')
+              input.setAttribute('accept', 'image/*')
+              input.click()
+
+              input.onchange = async () => {
+                const file = input.files ? input.files[0] : null
+                if (file) {
+                  const reader = new FileReader()
+                  reader.onload = () => {
+                    const imgTag = `<img src="${reader.result}" style="max-width:100%; height:auto;" />`
+                    setEditor(prevEditor => {
+                      const newContent = prevEditor + imgTag
+                      onChange(newContent)
+                      return newContent
+                    })
+                  }
+                  reader.readAsDataURL(file)
+                }
+              }
+            },
+          },
         },
-      }
-    }, [])
+      }),
+      [onChange],
+    )
 
     const formats = [
-      'font',
-      'header',
+      'size',
       'bold',
       'italic',
       'underline',
@@ -49,14 +73,8 @@ const QuillEditor = forwardRef<typeof ReactQuill | null, EditorProps>(
       'align',
       'color',
       'background',
-      'size',
-      'h1',
       'image',
     ]
-
-    useEffect(() => {
-      setEditor(value)
-    }, [value])
 
     return (
       <div>

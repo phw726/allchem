@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 import Link from 'next/link'
+import 'react-quill/dist/quill.snow.css'
 
 export const Wrapper = styled.div`
   display: flex;
@@ -52,6 +53,11 @@ export const PostInfo = styled.div`
   font-size: 12px;
   color: gray;
   margin: 10px 2px;
+
+  span {
+    display: flex;
+    gap: 10px;
+  }
 `
 export const Info = styled.div`
   display: flex;
@@ -75,6 +81,43 @@ export const Content = styled.div`
   min-height: 400px;
   overflow-wrap: break-word;
   line-height: 1.5;
+
+  .ql-align-right {
+    text-align: right !important;
+  }
+  .ql-align-center {
+    text-align: center !important;
+  }
+  .ql-align-justify {
+    text-align: justify !important;
+  }
+  .ql-size-huge {
+    font-size: 2.5em;
+  }
+  .ql-size-large {
+    font-size: 1.5rem;
+  }
+
+  .ql-size-small {
+    font-size: 0.75rem;
+  }
+  strong {
+    font-weight: bold;
+  }
+  em {
+    font-style: italic;
+  }
+
+  ol {
+    list-style: decimal;
+  }
+  ul {
+    list-style: disc;
+  }
+
+  img {
+    max-width: 100%;
+  }
 `
 
 /// Post Prev, Next btn ///
@@ -107,14 +150,29 @@ export const Arrow = styled.button`
 `
 export const PostUtilsWrapper = styled.div`
   display: flex;
+  align-items: center;
+  text-align: center;
 `
 
 export const Edit = styled(Link)`
   display: flex;
-  color: gray;
+  color: black;
+  padding-bottom: 2px;
+
+  &:hover {
+    color: royalblue;
+  }
 `
 
 export const Delete = styled.button`
   display: flex;
   border: none;
+  background-color: transparent;
+  color: black;
+  font-size: 12px;
+  cursor: pointer;
+
+  &:hover {
+    color: royalblue;
+  }
 `
