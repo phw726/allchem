@@ -5,7 +5,7 @@ export const Wrapper = styled.div`
   flex-direction: column;
   height: auto;
   width: auto;
-  margin-top: 60px;
+  margin-top: 20px;
 `
 
 export const TotalText = styled.span`
@@ -25,7 +25,7 @@ export const CommentText = styled.textarea`
   width: auto;
   height: 80px;
   margin: 20px 0px 10px 0;
-  padding: 4px 10px;
+  padding: 10px 10px;
   border: 1px solid lightgray;
   border-radius: 2px;
   background-color: transparent;
@@ -90,7 +90,7 @@ export const SubmitBtn_s = styled(SubmitBtn)`
 export const ListWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  border-bottom: 1px solid lightgray;
+  border-bottom: 1px solid #f1f2f2;
   width: auto;
   height: auto;
   padding: 10px 0;
@@ -120,22 +120,30 @@ export const Email = styled.div`
   color: #22272b;
 `
 
+export const UtilsWrapper = styled.div`
+  display: flex;
+  gap: 7px;
+  align-items: center;
+`
+
 export const DeleteBtn = styled.button`
   display: flex;
   border: none;
   background-color: transparent;
-  font-size: 13px;
-  color: red;
+  font-size: 18px;
+  color: darkgray;
   cursor: pointer;
   padding: 0;
-  height: 13px;
-  width: auto;
+  transition: all 0.3s ease;
 
-  width: 20px;
-  &:hover {
-    font-weight: bold;
+  &:nth-child(2) {
+    font-size: 14px;
   }
-  /*  */
+
+  &:hover {
+    /* transform: scale(1.3); */
+    color: royalblue;
+  }
 `
 
 export const EditBtn = styled(DeleteBtn)``

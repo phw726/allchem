@@ -62,7 +62,7 @@ export default function SearchPage() {
 
   return (
     <Layout>
-      <ListHeader renderType="compound" category="Integrated Search" />
+      <ListHeader renderType="compound" category="INTEGRATED SEARCH" />
       <SearchForm
         onSearch={handleMainSearch}
         searchWrd={searchWrd}

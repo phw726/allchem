@@ -3,15 +3,16 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 export const ListWrapper = styled.div`
-  width: auto;
+  width: 100%;
   height: auto;
 `
 
 export const ListItem = styled(Link)`
   display: flex;
-  align-items: center;
-  min-height: 120px;
+  width: 100%;
   height: auto;
+  min-height: 120px;
+  align-items: center;
   border-top: 1px solid #e0e0e0;
 
   &:hover {
@@ -79,11 +80,12 @@ export const ItemName = styled.div`
   }
 `
 export const PostName = styled.div`
+  display: flex;
+  width: auto;
+  flex-direction: column;
+  margin: 10px 50px 10px 0;
   font-size: 18px;
   font-weight: 600;
-  margin: 10px 50px 10px 0;
-  display: flex;
-  flex-direction: column;
   text-align: start;
   overflow: hidden;
 

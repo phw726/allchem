@@ -18,3 +18,6 @@ export { default as MainImg5 } from './main5.jpg'
 export { default as AnimationImg1 } from './animation1.png'
 export { default as AnimationImg2 } from './animation2.png'
 export { default as AnimationImg3 } from './animation3.png'
+export { default as UserImg1 } from './userImg1.png'
+
+export { default as UserImg2 } from './userImg2.png'

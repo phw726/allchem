@@ -14,6 +14,7 @@ import {
 import { useRouter } from 'next/router'
 import { signIn } from 'next-auth/react'
 import app from '../../../firebase'
+import { FirebaseError } from '@firebase/app'
 
 export type LogInType = 'signup' | 'login'
 
@@ -38,9 +39,11 @@ export default function LogInForm({ type }: LoginFormProps) {
         alert('Account registered successfully.')
         route.push('/')
       } catch (error: any) {
-        console.log(error)
-        console.log('email', email, 'password', password)
-        alert('Failed to register. Please try again in a few minutes')
+        if (error.code === 'auth/email-already-in-use') {
+          alert('This email is already in use. Please try another email.')
+        } else {
+          alert('Failed to register. Please try again in a few minutes')
+        }
       }
     } else {
       try {

@@ -19,7 +19,7 @@ export const Title = styled.div`
   font-size: 18px;
   font-weight: 600;
   padding: 4px 0;
-  border-bottom: 1px solid lightgray;
+  border-bottom: 1px solid #f1f2f2;
   padding-bottom: 10px;
   color: #22272b;
   align-items: center;
@@ -75,12 +75,13 @@ export const FileLink = styled(Link)`
 
 export const Content = styled.div`
   width: 100%;
-  margin: 40px 0px;
+  margin: 40px 0 20px;
   color: #22272b;
   font-size: 14px;
-  min-height: 400px;
+  min-height: 200px;
   overflow-wrap: break-word;
   line-height: 1.5;
+  border-bottom: 1px solid #f1f2f2;
 
   .ql-align-right {
     text-align: right !important;

@@ -9,7 +9,7 @@ import { css } from '@emotion/react'
 import React, { useContext, useEffect, useState } from 'react'
 import SearchForm from '@/components/search/SearchForm'
 import { getAuth, signOut } from 'firebase/auth'
-import AuthContext from '@/context/AuthContext'
+import AuthContext from '../../../hook/AuthContext'
 
 export default function Header() {
   const router = useRouter()
@@ -67,10 +67,16 @@ function HeaderUtils() {
           Sign In
         </S.HeaderUtilItems>
       ) : (
-        <S.HeaderUtilItems href="/mypage" className={isActive('/mypage')}>
-          {user?.displayName || user?.email || 'Verified User'}
-        </S.HeaderUtilItems>
+        <>
+          <S.HeaderUtilItems href="/mypage" className={isActive('/mypage')}>
+            {user?.displayName || user?.email || 'Verified User'}
+          </S.HeaderUtilItems>
+          <S.HeaderUtilButton as="button" onClick={handleLogout}>
+            Log out
+          </S.HeaderUtilButton>
+        </>
       )}
+
       <LuDot css={DotStyle} />
 
       <S.HeaderUtilItems href="/likes">My Chem</S.HeaderUtilItems>
@@ -79,11 +85,6 @@ function HeaderUtils() {
       <LuDot css={DotStyle} />
 
       <S.HeaderUtilItems href="/community">Community</S.HeaderUtilItems>
-      <LuDot css={DotStyle} />
-
-      <S.HeaderUtilButton as="button" onClick={handleLogout}>
-        Log out
-      </S.HeaderUtilButton>
     </S.HeaderUtilWrapper>
   )
 }

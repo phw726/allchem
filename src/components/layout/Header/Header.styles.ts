@@ -90,21 +90,23 @@ export const HeaderUtilItems = styled(Link)`
 `
 
 export const HeaderUtilButton = styled.button`
+  display: flex;
   width: auto;
   height: auto;
+  margin-left: -5px;
+  padding: 2px 4px;
+  font-weight: 400;
+  font-size: 12px;
+  border: 1px solid gray;
+  border-radius: 10px;
+  background-color: transparent;
+  color: gray;
   text-align: center;
   align-items: center;
-  margin: 34px 0 auto;
-  color: #22272b;
-  font-weight: 400;
-  display: flex;
-  font-size: 12px;
-  border: none;
-  background-color: transparent;
   cursor: pointer;
-  padding: 0;
 
   &:hover {
-    color: black;
+    color: #22272b;
+    border-color: #22272b;
   }
 `

@@ -6,7 +6,7 @@ import React from 'react'
 export default function LoginPage() {
   return (
     <Layout isFooter={false}>
-      <ListHeader renderType="post" category="Sign In" />
+      <ListHeader renderType="post" category="SIGN IN" />
       <LogInForm type="login" />
     </Layout>
   )

@@ -12,23 +12,14 @@ import {
   query,
   where,
 } from '@firebase/firestore'
+import * as postService from '@/remote/postService'
+
 import { getAuth } from 'firebase/auth'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { db } from '../../../firebase'
 import Pagination from '@/components/layout/Pagination'
-
-interface PostProps {
-  id: string
-  title: string
-  email: string
-  content: string
-  createdAt: string
-  updatedAt?: string
-  uid: string
-  category: string
-  comment?: string[]
-}
+import { PostProps } from '@/utils/types'
 
 export type CategoryType = 'All' | 'Notice' | 'Community' | 'Q&A'
 export const CATEGORIES: CategoryType[] = ['All', 'Notice', 'Community', 'Q&A']
@@ -47,31 +38,20 @@ export default function CommunityPage() {
     return () => unsubscribe()
   }, [auth])
 
-  const getPosts = async () => {
-    setPosts([])
-
-    let postRef = collection(db, 'posts')
-    let postsQuery
-
-    if (activeTab === 'All') {
-      postsQuery = query(postRef, orderBy('createdAt', 'desc'))
-    } else {
-      postsQuery = query(
-        postRef,
-        where('category', '==', activeTab),
-        orderBy('createdAt', 'desc'),
+  const getPostList = async (category: string) => {
+    try {
+      const data = await postService.getPosts(
+        activeTab === 'All' ? undefined : activeTab,
       )
+      // const fetchPost = await postService.getPosts(category)
+      setPosts(data)
+    } catch (error) {
+      console.error('Failed to fetch posts', error)
     }
-
-    const datas = await getDocs(postsQuery)
-    datas?.forEach(doc => {
-      const dataObj = { ...doc.data(), id: doc.id }
-      setPosts(prev => [...prev, dataObj as PostProps])
-    })
   }
 
   useEffect(() => {
-    getPosts()
+    getPostList(activeTab)
   }, [activeTab])
 
   const handleSetPage = (page: number) => {
@@ -82,7 +62,7 @@ export default function CommunityPage() {
 
   return (
     <Layout>
-      <ListHeader category="Community" renderType="post" />
+      <ListHeader category="COMMUNITY" renderType="post" />
       <FormWrapper>
         <CategoryWrapper>
           {CATEGORIES.map(category => (
@@ -108,7 +88,7 @@ export default function CommunityPage() {
       <ContentWrapper>
         {posts?.length > 0 ? (
           posts?.map((post, idx) => (
-            <ListBody key={`${post.id}-${idx}`} item={post} renderType="post" />
+            <ListBody key={post.uid + idx} item={post} renderType="post" />
           ))
         ) : (
           <strong>게시글이 없습니다.</strong>

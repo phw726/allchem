@@ -41,7 +41,7 @@ export const Content = styled.div`
 export const FooterMenu = styled.div`
   width: 100%;
   height: 65px;
-  border-bottom: 1px solid #d4dce5;
+  border-bottom: 1px solid #f1f2f2;
   display: flex;
   background-color: rgba(255, 255, 255, 0.8);
   z-index: 10;

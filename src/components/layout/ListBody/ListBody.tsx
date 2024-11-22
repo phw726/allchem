@@ -1,3 +1,5 @@
+/** @jsxImportSource @emotion/react **/
+
 import { LuDot } from 'react-icons/lu'
 import * as S from './ListBody.styles'
 import { FaAngleRight } from 'react-icons/fa'
@@ -7,7 +9,7 @@ import { dangerHTML, formatTimestamp } from '@/utils/helpers'
 
 interface ListBodyProps {
   item: {
-    id: string
+    id?: string
     chemNameKor?: string
     chemId?: string
     casNo?: string
@@ -17,26 +19,34 @@ interface ListBodyProps {
     user?: string
 
     ///post
+    postId: string
     title?: string
     createdAt: string
     updatedAt?: string
     content: string
     email?: string
     name?: string
+    uid: string
   }
 
   renderType: 'compound' | 'post'
+  isCompact?: boolean
 }
 
-export default function ListBody({ item, renderType }: ListBodyProps) {
+export default function ListBody({
+  item,
+  renderType,
+  isCompact = false,
+}: ListBodyProps) {
   const summary = dangerHTML(item.content).slice(0, 200)
 
   const href =
-    renderType === 'compound' ? `/compound/${item.id}` : `/community/${item.id}`
-  console.log('item', item)
+    renderType === 'compound'
+      ? `/compound/${item.id}`
+      : `/community/${item.postId}`
   return (
     <S.ListWrapper>
-      <S.ListItem href={href}>
+      <S.ListItem href={href} css={isCompact ? CompactStyle : undefined}>
         {renderType === 'compound' ? (
           <>
             <S.ItemImg src={ILogo1} alt="compound img" sizes="auto" />
@@ -66,9 +76,11 @@ export default function ListBody({ item, renderType }: ListBodyProps) {
                   ? `${formatTimestamp(item.updatedAt)} (Edited) `
                   : formatTimestamp(item.createdAt)}
               </S.PostInfo>
-              <S.PostName>{item.title}</S.PostName>
+              <S.PostName css={isCompact ? CompactStyle : undefined}>
+                {item.title}
+              </S.PostName>
 
-              {item.content && (
+              {!isCompact && item.content && (
                 <S.PostInfo className="post-info">
                   {summary}
                   {summary.length === 200 && '...'}
@@ -94,4 +106,9 @@ const rightStyle = css`
 
 const dotStyle = css`
   display: flex;
+`
+
+const CompactStyle = css`
+  font-size: 12px;
+  min-height: 0px;
 `

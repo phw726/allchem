@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
 import * as S from './Comment.styles'
 import { CommentType, PostProps } from '../postForm/PostForm'
-import AuthContext from '@/context/AuthContext'
+import AuthContext from '../../../hook/AuthContext'
 import { db } from '../../../../firebase'
 import { arrayRemove, arrayUnion, doc, updateDoc } from '@firebase/firestore'
+import { CiEdit } from 'react-icons/ci'
+import { AiOutlineDelete } from 'react-icons/ai'
 
 export interface CommentProps {
   post: PostProps
@@ -48,11 +50,6 @@ export default function Comment({ post, getPost }: CommentProps) {
 
           await updateDoc(postRef, {
             comments: arrayUnion(commentObj),
-            updatedAt: new Date().toLocaleDateString('en', {
-              hour: '2-digit',
-              minute: '2-digit',
-              second: '2-digit',
-            }),
           })
 
           await getPost(post.id)
@@ -149,20 +146,20 @@ export default function Comment({ post, getPost }: CommentProps) {
                 </S.Date>
                 {comment.uid === user?.uid &&
                   editCommentId !== comment.createdAt && (
-                    <>
+                    <S.UtilsWrapper>
                       <S.EditBtn
                         type="button"
                         onClick={() => handleCommentEdit(comment)}
                       >
-                        Edit
+                        <CiEdit />
                       </S.EditBtn>
                       <S.DeleteBtn
                         type="button"
                         onClick={() => handleCommentDelete(comment)}
                       >
-                        X
+                        <AiOutlineDelete />
                       </S.DeleteBtn>
-                    </>
+                    </S.UtilsWrapper>
                   )}
               </S.UserInfo>
               {editCommentId === comment.createdAt ? (
