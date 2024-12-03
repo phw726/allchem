@@ -13,7 +13,7 @@ export const CATEGORIES: PostCategoryType[] = ['Community', 'Q&A']
 export default function PostForm() {
   const router = useRouter()
   const { postId } = router.query as { postId?: string }
-  const { post, savePost, isLoading } = usePost(postId)
+  const { post, savePost, isLoading } = usePost({ postId })
 
   const { user } = useAuth()
   const [title, setTitle] = useState(post?.title || '')

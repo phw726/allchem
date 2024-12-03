@@ -110,5 +110,6 @@ const dotStyle = css`
 
 const CompactStyle = css`
   font-size: 12px;
-  min-height: 0px;
+  min-height: 0;
+  padding-bottom: 4px;
 `

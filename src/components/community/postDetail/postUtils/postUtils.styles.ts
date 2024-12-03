@@ -67,13 +67,13 @@ export const ModalWrapper = styled.div`
   right: 0px;
   top: 40px;
   bottom: 0px;
-  background-color: #fcfcfc;
-  border: 1px solid lightgray;
+  background-color: royalblue;
   border-radius: 4px;
   padding: 4px;
   gap: 10px;
   cursor: default;
   z-index: 1000;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
 `
 
 export const ModalUtilWrapper = styled.div`
@@ -89,9 +89,10 @@ export const ModalTitle = styled.div`
   display: flex;
   position: absolute;
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  color: #22272b;
+  text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  color: #fff;
 `
 
 export const ModalCloseBtn = styled.button`
@@ -107,7 +108,8 @@ export const ModalCloseBtn = styled.button`
   margin: 8px 0 8px 0;
   cursor: pointer;
   background-color: transparent;
-  color: gray;
+  color: #fff;
+  transition: all 0.3s ease;
 
   &:hover {
     color: black;
@@ -129,9 +131,9 @@ export const ModalItem = styled(Link)`
   margin-bottom: 10px;
   border-radius: 50%;
   font-size: 25px;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 2px 7px rgba(0, 2, 61, 0.5);
   /* border: 1px solid #f5f5f5?; */
-  background-color: #f7f7f7;
+  background-color: #e6e6e6;
   cursor: pointer;
   align-items: center;
   justify-content: center;
@@ -139,7 +141,7 @@ export const ModalItem = styled(Link)`
 
   &:hover {
     transform: scale(1.2);
-    background-color: #fff;
+    background-color: #fffde2;
   }
 `
 
@@ -183,9 +185,9 @@ export const PostLink = styled.div`
 export const LinkCopyBtn = styled.button`
   width: 48px;
   height: auto;
-  padding: 5px 6px;
+  padding: 6px 4px;
   border-radius: 4px;
-  border: 2px solid royalblue;
+  border: 2px solid #2e2da6;
   color: royalblue;
   background-color: #fff;
   font-weight: 600;
@@ -195,6 +197,7 @@ export const LinkCopyBtn = styled.button`
 
   &:hover {
     background-color: royalblue;
+    border-color: royalblue;
     color: #fff;
   }
 `

@@ -1,5 +1,4 @@
 import PostDetailForm from '@/components/community/postDetail'
-import { PostProps } from '@/components/community/postForm/PostForm'
 import Layout from '@/components/layout/Layout'
 import ListHeader from '@/components/layout/ListHeader'
 import React from 'react'

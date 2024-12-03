@@ -1,12 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import * as S from './postUtils.styles'
-
-import { IoShareSocialOutline } from 'react-icons/io5'
-import AuthContext from '../../../../hook/AuthContext'
-import { PostProps } from '../../postForm/PostForm'
-import { db } from '../../../../../firebase'
-import { arrayUnion, doc, updateDoc } from '@firebase/firestore'
 import { AiFillLike, AiOutlineLike } from 'react-icons/ai'
+import { useAuth } from '@/hook/useAuth'
+import { useLike } from '@/hook/useLike'
+import { PostProps } from '@/utils/types'
 
 export interface LikeProps {
   post: PostProps
@@ -14,65 +11,25 @@ export interface LikeProps {
 }
 
 export default function PostLike({ post, getPost }: LikeProps) {
-  const [isLike, setIsLike] = useState(false)
-  const { user } = useContext(AuthContext)
-  const likeCount = post?.likes?.length || 0
+  const { user } = useAuth()
+  const { likes, mutate: toggleLike } = useLike()
+  const isLike = !!likes?.some(
+    like => like.postId === post.postId && like.userId === user?.uid,
+  ) // isLike 기본값이 false
 
-  useEffect(() => {
-    if (user?.uid && post.likes) {
-      const userLiked = post.likes.some(like => like.uid === user.uid)
-      setIsLike(userLiked)
-    }
-  }, [user, post.likes])
+  const likeCount =
+    likes?.filter(like => like.postId === post.postId).length || 0
 
-  const toggleLike = async () => {
+  const handletoggleLike = () => {
     if (!user) {
       alert('Please use after signing in.')
       return
     }
 
-    if (post && post.id) {
-      try {
-        const LikeRef = doc(db, 'posts', post.id)
-
-        const likeObj = {
-          uid: user.uid,
-          email: user.email,
-          createdAt: new Date().toLocaleDateString('en', {
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-          }),
-        }
-
-        // like 취소
-
-        if (isLike) {
-          const updatedLikes = (post.likes || []).filter(
-            like => like.uid !== user.uid,
-          )
-          await updateDoc(LikeRef, { likes: updatedLikes })
-          setIsLike(false)
-          alert('Like removed successfully')
-        } else {
-          // like 추가
-          await updateDoc(LikeRef, {
-            likes: arrayUnion(likeObj),
-          })
-
-          setIsLike(true)
-          alert('Like added successfully')
-        }
-
-        await getPost(post.id)
-      } catch (e) {
-        console.log(e)
-        alert('Failed to add Like. Please try again later')
-      }
-    }
+    toggleLike({ post })
   }
   return (
-    <S.UtilBtn type="button" onClick={toggleLike} $active={isLike}>
+    <S.UtilBtn type="button" onClick={handletoggleLike} $active={isLike}>
       {isLike ? <AiFillLike /> : <AiOutlineLike />}
       <small>{likeCount}</small>
     </S.UtilBtn>

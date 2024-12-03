@@ -8,12 +8,13 @@ import 'react-quill/dist/quill.snow.css'
 import Comment from '../comment/Comment'
 import PostUtils from './postUtils/PostUtils'
 import { PostProps } from '@/utils/types'
+import { useAuth } from '@/hook/useAuth'
 
 export default function PostDetailForm() {
   const [post, setPost] = useState<PostProps | null>(null)
   const router = useRouter()
   const { postId } = router.query
-  const { user } = useContext(AuthContext)
+  const { user } = useAuth()
 
   const fetchPost = async (id: string) => {
     try {

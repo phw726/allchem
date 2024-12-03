@@ -1,45 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { PostProps } from '../community/postForm/PostForm'
-import AuthContext from '../../hook/AuthContext'
 import * as S from './mypage.styles'
 import { FaArrowAltCircleRight } from 'react-icons/fa'
-import {
-  collection,
-  onSnapshot,
-  orderBy,
-  query,
-  where,
-} from '@firebase/firestore'
-import { db } from '../../../firebase'
 import ListBody from '../layout/ListBody'
-import { tree } from 'next/dist/build/templates/app-page'
-import { MdMoreVert } from 'react-icons/md'
-import { IoIosMore } from 'react-icons/io'
+import { useAuth } from '@/hook/useAuth'
+import { usePost } from '@/hook/usePost'
+import { IoMdMore } from 'react-icons/io'
+import Spacing from '../common/Spacing'
 
 export default function MyPost() {
-  const [myPosts, setMyPosts] = useState<PostProps[]>([])
-  const { user } = useContext(AuthContext)
-
-  useEffect(() => {
-    if (user) {
-      let postsRef = collection(db, 'posts')
-
-      const myPostQuery = query(
-        postsRef,
-        where('uid', '==', user.uid),
-        orderBy('createdAt', 'desc'),
-      )
-
-      onSnapshot(myPostQuery, snapShot => {
-        const dataObj = snapShot.docs.map(doc => ({
-          ...doc.data(),
-          id: doc?.id,
-        }))
-        setMyPosts(dataObj as PostProps[])
-      })
-    }
-  }, [user])
-  const totalCount = myPosts.length
+  const { user } = useAuth()
+  const { post: myPosts, isLoading } = usePost({ userId: user?.uid })
+  const totalCount = Array.isArray(myPosts) ? myPosts?.length : 0
 
   return (
     <S.Wrapper>
@@ -49,10 +19,9 @@ export default function MyPost() {
           <FaArrowAltCircleRight />
         </S.More>
       </S.TitleWrapper>
-
-      {myPosts && myPosts.length > 0
+      {Array.isArray(myPosts) && myPosts.length > 0
         ? myPosts
-            .slice(0, 5)
+            .slice(0, 3)
             .map(post => (
               <ListBody
                 isCompact={true}
@@ -62,6 +31,16 @@ export default function MyPost() {
               />
             ))
         : 'no post'}
+      {Array.isArray(myPosts) && myPosts.length > 3 ? (
+        <>
+          <Spacing size={10} />
+          <S.More href="/mypage/myposts">
+            <IoMdMore />
+          </S.More>
+        </>
+      ) : (
+        ''
+      )}
     </S.Wrapper>
   )
 }

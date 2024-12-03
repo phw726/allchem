@@ -8,15 +8,16 @@ import {
 } from '@firebase/firestore'
 import { useRouter } from 'next/router'
 import { db } from '../../../../firebase'
-import { PostProps } from '../postForm/PostForm'
+import { PostProps } from '@/utils/types'
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa'
+import { BsList } from 'react-icons/bs'
 import * as S from './PostDetailForm.styles'
 
 export default function PostHeader({ createdAt }: { createdAt: string }) {
   const router = useRouter()
 
   const fetchPrev = async () => {
-    const postRef = collection(db, 'posts')
+    const postRef = collection(db, 'POST')
     const postQuery = query(
       postRef,
       where('createdAt', '<', createdAt),
@@ -63,6 +64,10 @@ export default function PostHeader({ createdAt }: { createdAt: string }) {
         <FaAngleLeft />
         Prev
       </S.Arrow>
+      {/* <S.List href="/community">
+        <BsList />
+        List
+      </S.List> */}
       <S.Arrow onClick={fetchNext}>
         Next
         <FaAngleRight />

@@ -21,7 +21,7 @@ export const BackgroundImage = styled(Image)`
   height: auto;
   position: static;
   z-index: -10;
-  margin-top: 110px;
+  margin-top: 100px;
   left: 0;
   bottom: 0;
   box-shadow: 10px 10px 999px rgba(0, 0, 0, 10);
@@ -126,7 +126,7 @@ export const Icon = styled.button`
   &:hover {
     transform: scale(1.2);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
-    background-color: #cfdeed;
+    background-color: #22272b;
     color: #fff;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
   }

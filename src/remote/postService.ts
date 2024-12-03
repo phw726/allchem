@@ -7,10 +7,8 @@ import {
   doc,
   getDoc,
   getDocs,
-  limit,
   orderBy,
   query,
-  setDoc,
   updateDoc,
   where,
 } from '@firebase/firestore'
@@ -58,70 +56,56 @@ export async function getPost(
   return null
 }
 
-// export async function getPost() {
+export async function getMyPost({
+  postId,
+  userId,
+}: {
+  postId?: string
+  userId?: string
+}): Promise<PostProps[]> {
+  const constants = [where('userId', '==', userId)]
 
-//   const postRef = doc(db, COLLECTIONS.POST, 'id')
+  if (postId) {
+    constants.push(where('postId', '==', postId))
+  }
 
-//   const postQuery = query(collection(postRef, COLLECTIONS.POST), orderBy('createdAt','desc'))
+  const postQuery = query(
+    collection(db, COLLECTIONS.POST),
+    ...constants,
+    orderBy('createdAt', 'desc'),
+  )
 
-//   const postSnap = await getDocs(postQuery)
+  const postSnap = await getDocs(postQuery)
 
-//   const posts = postSnap.docs.map((doc) => {
-//     const post = doc.data()
-//     return {
-//       id: doc.id,
-//       ...posts,
-//       createAt: post.createdAt.newData().toLocaleDateString('en', {
-//         hour: '2-digit',
-//         minute: '2-digit',
-//         second: '2-digit',
-//       }
-
-//       title: title,
-//       content: content,
-//       file: fileUrls,
-//       updatedAt: new Date()?),
-//       category,
-//     }
-//   })
-
-//     if (postSnap.exists()) {
-//       const postData = { id: postSnap.id, ...(postSnap.data() as PostProps) }
-//       setPost(postData)
-
-//       setTitle(postData.title)
-//       setContent(postData.content)
-//       setCategory(postData.category as PostCategoryType)
-
-//       if (postData.files) {
-//         const postFiles = postData.files.map(
-//           fileUrl =>
-//             ({
-//               preview: fileUrl,
-//             }) as FileWithPreview,
-//         )
-//         setFiles(postFiles)
-//       }
-//     }
-
-// }
+  return postSnap.docs.map(doc => ({
+    ...(doc.data() as PostProps),
+    postId: doc.id,
+  }))
+}
 
 export async function writePost(
   post: Omit<PostProps, 'postId'>,
-): Promise<void> {
-  const postRef = await addDoc(collection(db, COLLECTIONS.POST), post)
+): Promise<{ postId: string }> {
+  const postWithUserID = { ...post, userId: post.uid }
+  const postRef = await addDoc(collection(db, COLLECTIONS.POST), postWithUserID)
+  return { postId: postRef.id }
 }
 // 기존 게시글 수정
 export async function updatePost(
   postId: string,
   post: Omit<PostProps, 'postId'>,
-) {
+): Promise<{ postId: string }> {
   if (!postId) {
     throw new Error('Document ID is required for updating a post.')
   }
+
+  const postWithUserID = { ...post, userId: post.uid }
+
   const docRef = doc(db, COLLECTIONS.POST, postId)
-  return await updateDoc(docRef, post)
+  await updateDoc(docRef, postWithUserID)
+  return { postId }
 }
+
 export async function removePost(postId: string) {
   const postRef = doc(db, COLLECTIONS.POST, postId)
   return deleteDoc(postRef)

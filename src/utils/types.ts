@@ -25,8 +25,8 @@ export interface PostProps {
 }
 
 export interface CommentProps {
-  commentId: string // 댓글 Id
-  postId: string // 게시글 Id
+  commentId?: string // 코멘트 Id
+  postId?: string // 게시글 Id
   userId?: string // 현재 user Id
   uid: string // firebase uid
   content: string
@@ -43,7 +43,6 @@ export interface LikeProps {
 }
 
 export interface BookMarkProps {
-  bookmarkId: string
   postId: string
   userId?: string
   uid: string

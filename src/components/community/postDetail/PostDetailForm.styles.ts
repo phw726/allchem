@@ -133,12 +133,12 @@ export const PostHeaderWrapper = styled.div`
 `
 
 export const Arrow = styled.button`
-  border: none;
-  background-color: transparent;
+  display: flex;
   font-size: 12px;
   padding: 4px 0;
-  display: flex;
+  border: none;
   color: gray;
+  background-color: transparent;
   cursor: pointer;
   transition: all 0.3s ease;
   text-align: center;
@@ -149,16 +149,33 @@ export const Arrow = styled.button`
     transform: scale(1.2);
   }
 `
+
+export const List = styled(Link)`
+  display: flex;
+  font-size: 12px;
+  color: gray;
+  cursor: pointer;
+  text-align: center;
+  align-items: center;
+  transition: all 0.3s ease;
+
+  &:hover {
+    color: #22272b;
+    transform: scale(1.2);
+  }
+`
 export const PostUtilsWrapper = styled.div`
   display: flex;
-  align-items: center;
   text-align: center;
+  align-items: center;
+  gap: 5px;
 `
 
 export const Edit = styled(Link)`
   display: flex;
   color: black;
   padding-bottom: 2px;
+  border-bottom: 1px solid black;
 
   &:hover {
     color: royalblue;
@@ -167,10 +184,12 @@ export const Edit = styled(Link)`
 
 export const Delete = styled.button`
   display: flex;
+  font-size: 12px;
+  padding: 0;
   border: none;
+  border-bottom: 1px solid black;
   background-color: transparent;
   color: black;
-  font-size: 12px;
   cursor: pointer;
 
   &:hover {
