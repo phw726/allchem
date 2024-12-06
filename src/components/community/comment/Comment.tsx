@@ -3,10 +3,10 @@ import * as S from './Comment.styles'
 import * as commentService from '@/remote/commentService'
 import { CiEdit } from 'react-icons/ci'
 import { AiOutlineDelete } from 'react-icons/ai'
-import { useAuth } from '@/hook/useAuth'
-import { usePostComments } from '@/hook/useComment'
+import { usePostComments } from '@/hooks/useComment'
 import { useRouter } from 'next/router'
 import { CommentProps, PostProps } from '@/utils/types'
+import { useAuth } from '@/hooks/useAuth'
 
 export interface FetchProps {
   post: PostProps

@@ -29,9 +29,9 @@
     "next/types/**/*.ts",
     "src/@types",
     "**/*.d.ts",
-    "src/api/axios.tst",
-    "src/pages/api/query/useDataListQuery.tx",
-    "src/context/AuthContext.tㅌ"
+    "src/api/axios.ts",
+    "src/pages/api/query/useDataListQuery.ts",
+    "src/context/AuthContext.ts"
   ],
   "exclude": ["./tsconfig.paths.json"]
 }

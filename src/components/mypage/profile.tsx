@@ -1,4 +1,4 @@
-import AuthContext from '../../hook/AuthContext'
+import AuthContext from '../../hooks/useAuth'
 import React, { useContext } from 'react'
 import * as S from './mypage.styles'
 import { UserImg2 } from '../../../public/image'

@@ -3,7 +3,6 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import SearchForm from '@/components/search/SearchForm'
-import CommunityCategory from '@/components/community/Category'
 
 interface ListHeaderProps {
   category: string
@@ -25,7 +24,7 @@ export default function ListHeader({ renderType, category }: ListHeaderProps) {
   return (
     <S.Wrapper>
       <S.MenuText>{category}</S.MenuText>
-      {renderType === 'compound' ? (
+      {/* {renderType === 'compound' ? (
         <S.SearchWrapper>
           <SearchForm type="main" onSearch={handleSearch} />
           <S.SearchButton
@@ -37,7 +36,7 @@ export default function ListHeader({ renderType, category }: ListHeaderProps) {
         </S.SearchWrapper>
       ) : (
         ''
-      )}
+      )} */}
     </S.Wrapper>
   )
 }

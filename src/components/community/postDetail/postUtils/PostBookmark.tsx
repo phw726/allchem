@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react'
 import * as S from './postUtils.styles'
 
-import AuthContext from '../../../../hook/AuthContext'
+import AuthContext from '../../../../hooks/useAuth'
 import { db } from '../../../../../firebase'
 import { arrayUnion, doc, updateDoc } from '@firebase/firestore'
 import { FaBookmark, FaRegBookmark } from 'react-icons/fa'
 import { PostProps } from '@/utils/types'
-import { useAuth } from '@/hook/useAuth'
-import { useBook } from '@/hook/useBook'
+import { useAuth } from '@/hooks/useAuth'
+import { useBook } from '@/hooks/useBook'
 
 export interface BookMarkProps {
   post: PostProps

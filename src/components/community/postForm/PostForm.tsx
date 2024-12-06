@@ -4,9 +4,9 @@ import QuillEditor from '@/components/common/QuillEditor'
 import FileDrop, { FileWithPreview } from './FileDrop'
 import * as postService from '@/remote/postService'
 import { useRouter } from 'next/router'
-import { useAuth } from '../../../hook/useAuth'
+import { useAuth } from '../../../hooks/useAuth'
 import { PostCategoryType, PostProps } from '@/utils/types'
-import { usePost } from '@/hook/usePost'
+import { usePost } from '@/hooks/usePost'
 
 export const CATEGORIES: PostCategoryType[] = ['Community', 'Q&A']
 

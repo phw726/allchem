@@ -1,10 +1,10 @@
 import * as S from './mypage.styles'
 import { FaArrowAltCircleRight } from 'react-icons/fa'
 import ListBody from '../layout/ListBody'
-import { useAuth } from '@/hook/useAuth'
-import { usePost } from '@/hook/usePost'
+import { usePost } from '@/hooks/usePost'
 import { IoMdMore } from 'react-icons/io'
 import Spacing from '../common/Spacing'
+import { useAuth } from '@/hooks/useAuth'
 
 export default function MyPost() {
   const { user } = useAuth()

@@ -3,12 +3,12 @@ import * as S from './PostDetailForm.styles'
 import { useRouter } from 'next/router'
 import * as postService from '@/remote/postService'
 import PostHeader from './PostHeader'
-import AuthContext from '../../../hook/AuthContext'
+import AuthContext from '../../../hooks/useAuth'
 import 'react-quill/dist/quill.snow.css'
 import Comment from '../comment/Comment'
 import PostUtils from './postUtils/PostUtils'
 import { PostProps } from '@/utils/types'
-import { useAuth } from '@/hook/useAuth'
+import { useAuth } from '@/hooks/useAuth'
 
 export default function PostDetailForm() {
   const [post, setPost] = useState<PostProps | null>(null)

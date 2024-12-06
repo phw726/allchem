@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import * as S from './postUtils.styles'
 import { AiFillLike, AiOutlineLike } from 'react-icons/ai'
-import { useAuth } from '@/hook/useAuth'
-import { useLike } from '@/hook/useLike'
+import { useAuth } from '@/hooks/useAuth'
+import { useLike } from '@/hooks/useLike'
 import { PostProps } from '@/utils/types'
 
 export interface LikeProps {

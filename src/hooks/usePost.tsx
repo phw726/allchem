@@ -1,7 +1,7 @@
 import { PostProps } from '@/utils/types'
-import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { getMyPost, getPost, updatePost, writePost } from '@/remote/postService'
 import { useRouter } from 'next/router'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 export function usePost({
   postId,
@@ -17,9 +17,10 @@ export function usePost({
     data: post,
     isLoading,
     error,
-  } = useQuery(
-    ['post', { postId, userId }],
-    async () => {
+  } = useQuery({
+    queryKey: ['post', { postId, userId }],
+    enabled: !!postId || !!userId,
+    queryFn: async () => {
       if (postId) {
         return await getPost(postId)
       } else if (userId) {
@@ -29,10 +30,7 @@ export function usePost({
         // throw new Error('Either postId or userId must be provided.')
       }
     },
-    {
-      enabled: !!postId || !!userId,
-    },
-  )
+  })
 
   const { mutate: savePost, isLoading: isSaving } = useMutation(
     (newPost: Omit<PostProps, 'postId'>) =>

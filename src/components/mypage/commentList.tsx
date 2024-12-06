@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { PostProps } from '../community/postForm/PostForm'
-import AuthContext from '../../hook/AuthContext'
+import AuthContext from '../../hooks/useAuth'
 import * as S from './mypage.styles'
 import { FaArrowAltCircleRight } from 'react-icons/fa'
 import {

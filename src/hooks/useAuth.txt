@@ -1,27 +1,23 @@
-import { User, getAuth, onAuthStateChanged } from 'firebase/auth'
-import {
-  ReactNode,
-  createContext,
-  useEffect,
-  useState,
-  useContext,
-} from 'react'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import { User } from 'next-auth'
+import { ReactNode, useContext, useEffect, useState } from 'react'
+import { createContext } from 'vm'
 import app from '../../firebase'
 
-// Context 타입 정의
+
 
 interface AuthProps {
   children: ReactNode
 }
 
-const AuthContext = createContext({
-  user: null as User | null,
-})
-
 // Context Provider 정의
 export const AuthContextProvider = ({ children }: AuthProps) => {
   const auth = getAuth(app)
   const [currentUser, setCurrentUser] = useState<User | null>(null)
+  const AuthContext = createContext({
+    user: null as User | null,
+  })
+  
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, user => {
@@ -39,4 +35,11 @@ export const AuthContextProvider = ({ children }: AuthProps) => {
   )
 }
 
-export default AuthContext
+
+export const useAuth = () => {
+  const context = useContext(AuthContext)
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthContextProvider')
+  }
+  return context
+}

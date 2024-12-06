@@ -7,14 +7,17 @@ import { ILogo3 } from '../../../../public/image'
 import { LuDot } from 'react-icons/lu'
 import { css } from '@emotion/react'
 import React, { useContext, useEffect, useState } from 'react'
-import SearchForm from '@/components/search/SearchForm'
 import { getAuth, signOut } from 'firebase/auth'
-import AuthContext from '../../../hook/AuthContext'
+import { useAuth } from '@/hooks/useAuth'
+import { useSearchStore } from '@/state/searchState'
+import SearchForm from '@/components/search/SearchForm/SearchForm'
 
 export default function Header() {
+  const { searchWrd, setSearchWrd } = useSearchStore()
   const router = useRouter()
 
   const handleSearch = (searchValue: string) => {
+    setSearchWrd(searchValue)
     router.push(`/search?keyword=${searchValue}`)
   }
 
@@ -31,7 +34,7 @@ export default function Header() {
         <S.LogoText>ALLCHEM</S.LogoText>
       </S.Logo>
       <S.HeaderWrapper>
-        <SearchForm type="header" onSearch={handleSearch} />
+        <SearchForm type="header" />
         <HeaderUtils />
         <Menu />
       </S.HeaderWrapper>
@@ -43,7 +46,7 @@ function HeaderUtils() {
   const router = useRouter()
   const [isLogIn, setIsLogIn] = useState(false)
   const auth = getAuth()
-  const { user } = useContext(AuthContext)
+  const { user } = useAuth()
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {

@@ -1,14 +1,18 @@
 {
   "extends": [
-    "plugin:prettier/recommended","prettier",
-    "next/core-web-vitals", "eslint:recommended",
+    "plugin:prettier/recommended",
+    "prettier",
+    "next/core-web-vitals",
+    "eslint:recommended",
+    "plugin:@tanstack/eslint-plugin-query/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended", "next/typescript"],
-    "parser": "@typescript-eslint/parser",
-"plugins": ["prettier"],
+    "plugin:@typescript-eslint/recommended",
+    "next/typescript"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["prettier"],
 
   "parserOptions": {
     "ecmaVersion": "latest"
   }
-
 }

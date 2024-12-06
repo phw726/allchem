@@ -1,10 +1,10 @@
 import * as S from './mypage.styles'
 import { FaArrowAltCircleRight } from 'react-icons/fa'
 import ListBody from '../layout/ListBody'
-import { useBook } from '@/hook/useBook'
+import { useBook } from '@/hooks/useBook'
 import Spacing from '../common/Spacing'
 import { IoMdMore } from 'react-icons/io'
-import { usePost } from '@/hook/usePost'
+import { usePost } from '@/hooks/usePost'
 import { PostProps } from '@/utils/types'
 
 export default function BookmarkPostList() {

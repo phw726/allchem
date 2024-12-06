@@ -34,7 +34,7 @@ export default async function handler(
     )}&searchCnd=${searchCnd}&numOfRows=${numOfRows}&pageNo=${pageNo}`
 
     const response = await axios.get(apiUrl)
-
+    res.setHeader('Cache-Control', 'no-store')
     res.status(200).json(response.data)
   } catch (error) {
     res.status(500).json({ message: 'Error fetching data from external API' })

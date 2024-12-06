@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 
-export const SearchWrpper = styled.form`
+export const SearchWrapper = styled.form`
   display: flex;
   position: relative;
   align-items: center;

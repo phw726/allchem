@@ -1,62 +1,67 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import * as S from './SearchForm.styles'
 import { useRouter } from 'next/router'
-import { IoIosSearch } from 'react-icons/io'
 import { MdOutlineManageSearch } from 'react-icons/md'
+import { useSearchStore } from '@/state/searchState'
+import { IoIosSearch } from 'react-icons/io'
 
 interface SearchFormProps {
-  onSearch: (value: string) => void
   type: 'header' | 'main'
-  searchWrd?: string
   customButton?: React.ReactNode
 }
 
 export default function SearchForm({
-  onSearch,
   type = 'main',
-  searchWrd = '',
   customButton,
 }: SearchFormProps) {
   const router = useRouter()
-  const [searchValue, setSearchValue] = useState<string>(searchWrd)
+  const { searchWrd, setSearchWrd, clearSearch } = useSearchStore()
+  const [localSearchWrd, setLocalSearchWrd] = useState<string>(searchWrd || '')
+
+  useEffect(() => {
+    setLocalSearchWrd(localSearchWrd)
+
+    if (type === 'main') {
+      if (searchWrd) {
+        setLocalSearchWrd(searchWrd)
+      }
+    } else {
+      return
+    }
+  }, [type, searchWrd])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!searchValue.trim()) {
-      alert('Enter keyword(s) to search')
-      router.push(`/search`)
-      return
-    }
-
-    onSearch(searchValue)
+    router.push(`/search?keyword=${localSearchWrd}`)
+    setSearchWrd(localSearchWrd)
 
     if (type === 'header') {
-      router.push(`/search?keyword=${searchValue}`)
-      setSearchValue('')
+      clearSearch()
+      setLocalSearchWrd('')
+    }
+
+    if (!localSearchWrd) {
+      alert('Please enter a keyword to search.')
+      return
     }
   }
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(event.target.value)
+    setLocalSearchWrd(event.target.value)
   }
 
-  const defaultPlaceholder =
-    type === 'main'
-      ? '   57-27-2    |    C9H8O4    |    C1=CC=C(C=C1)C=O'
-      : ' search...'
-
   return (
-    <S.SearchWrpper onSubmit={handleSubmit}>
-      {type === 'main' ? (
+    <S.SearchWrapper onSubmit={handleSubmit}>
+      {type === 'main' && (
         <S.StyleWrapper>
           <S.SearchMainIcon>
             <MdOutlineManageSearch />
           </S.SearchMainIcon>
           <S.SearchMainInput
             type="text"
-            placeholder={defaultPlaceholder}
-            value={searchValue}
+            placeholder={'   57-27-2    |    C9H8O4    |    C1=CC=C(C=C1)C=O'}
+            value={localSearchWrd}
             onChange={handleInputChange}
           />
           {customButton ? (
@@ -65,19 +70,21 @@ export default function SearchForm({
             <S.SearchButton type="submit">Search</S.SearchButton>
           )}
         </S.StyleWrapper>
-      ) : (
+      )}
+
+      {type === 'header' && (
         <S.StyleWrapper>
           <S.SearchHeaderIcon>
             <IoIosSearch />
           </S.SearchHeaderIcon>
           <S.SearchHeaderInput
             type="text"
-            placeholder={defaultPlaceholder}
-            value={searchValue}
+            placeholder={' search...'}
+            value={localSearchWrd}
             onChange={handleInputChange}
           />
         </S.StyleWrapper>
       )}
-    </S.SearchWrpper>
+    </S.SearchWrapper>
   )
 }
