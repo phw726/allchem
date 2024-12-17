@@ -2,30 +2,32 @@ import React, { useCallback, useEffect, useState } from 'react'
 import * as S from './PostForm.styles'
 import QuillEditor from '@/components/common/QuillEditor'
 import FileDrop, { FileWithPreview } from './FileDrop'
-import * as postService from '@/remote/postService'
 import { useRouter } from 'next/router'
 import { useAuth } from '../../../hooks/useAuth'
 import { PostCategoryType, PostProps } from '@/utils/types'
-import { usePost } from '@/hooks/usePost'
+import { useData } from '@/hooks/useData'
 
 export const CATEGORIES: PostCategoryType[] = ['Community', 'Q&A']
 
 export default function PostForm() {
   const router = useRouter()
   const { postId } = router.query as { postId?: string }
-  const { post, savePost, isLoading } = usePost({ postId })
-
   const { user } = useAuth()
-  const [title, setTitle] = useState(post?.title || '')
+  const { data: post = null, saveItem } = useData<PostProps>({
+    collectionName: 'POST',
+    itemId: postId,
+  })
+  const [title, setTitle] = useState<string>('')
   const [category, setCategory] = useState<PostCategoryType>('Community')
-  const [content, setContent] = useState(post?.content || '')
+  const [content, setContent] = useState<string>('')
   const [files, setFiles] = useState<FileWithPreview[]>([]) // 파일 리스트로 변경
+  const safePost = post as PostProps
 
   useEffect(() => {
     if (post) {
-      setTitle(post.title || '')
-      setCategory(post.category || 'Community')
-      setContent(post.content || '')
+      setTitle(safePost?.title || '')
+      setCategory(safePost?.category || 'Community')
+      setContent(safePost?.content || '')
     }
   }, [post])
 
@@ -47,14 +49,16 @@ export default function PostForm() {
     //   return
     // }
 
-    const data = {
+    const data: PostProps = {
+      postId: postId || '',
+      userId: user?.uid || '',
       title,
       category,
       content,
       email: user?.email as string,
       uid: user?.uid as string,
       createdAt:
-        post?.createdAt ||
+        safePost?.createdAt ||
         new Date()?.toLocaleDateString('en', {
           hour: '2-digit',
           minute: '2-digit',
@@ -70,22 +74,8 @@ export default function PostForm() {
     }
 
     try {
-      const fileUrls = files.map(file => file.preview)
-      if (postId) {
-        //만약 post 데이터 있으면 firestore로 데이터 수정
-
-        await postService.updatePost(postId, data)
-        alert('Post updated successfully!')
-        router.push(`/community/${postId}`)
-      } else {
-        // 없으면 기존처럼 데이터 생성
-
-        await postService.writePost(data)
-
-        alert('Post created successfully!')
-
-        router.push('/community')
-      }
+      await saveItem(data) // Save or update the post
+      router.push(postId ? `/community/${postId}` : '/community') // Redirect
     } catch (e: any) {
       console.log(e)
       alert('Failed to submit post. Please try again later')

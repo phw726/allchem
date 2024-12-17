@@ -1,10 +1,10 @@
-import AuthContext from '../../hooks/useAuth'
+import { useAuth } from '../../hooks/useAuth'
 import React, { useContext } from 'react'
 import * as S from './mypage.styles'
 import { UserImg2 } from '../../../public/image'
 
 export default function Profile() {
-  const { user } = useContext(AuthContext)
+  const { user } = useAuth()
 
   const getLoginProvider = () => {
     if (!user?.providerData) return 'Allchem account'

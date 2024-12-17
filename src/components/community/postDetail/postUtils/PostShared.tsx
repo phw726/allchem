@@ -99,7 +99,7 @@ function Modal({ handleModalOpen }: ModalType) {
       </S.ModalItemWrapper>
       <S.LinkWrapper>
         <S.PostLink>{currentUrl}</S.PostLink>
-        <S.LinkCopyBtn onClick={copyToClipboard}>Copy</S.LinkCopyBtn>
+        <S.LinkCopyBtn onClick={copyToClipboard}>COPY</S.LinkCopyBtn>
       </S.LinkWrapper>
     </S.ModalWrapper>
   )

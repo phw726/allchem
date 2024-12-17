@@ -1,28 +1,25 @@
 import * as S from './mypage.styles'
 import { FaArrowAltCircleRight } from 'react-icons/fa'
 import ListBody from '../layout/ListBody'
-import { useBook } from '@/hooks/useBook'
 import Spacing from '../common/Spacing'
 import { IoMdMore } from 'react-icons/io'
-import { usePost } from '@/hooks/usePost'
-import { PostProps } from '@/utils/types'
+import { useAuth } from '@/hooks/useAuth'
+import { useFetchToggledPost } from '@/hooks/useFetchPostToggle'
 
-export default function BookmarkPostList() {
-  const { bookmarks: myBooks } = useBook({})
-  const { post: BookMarkPost, isLoading } = usePost({})
+export default function BookmarkPostList(postId: string) {
+  const { user } = useAuth()
 
-  console.log('bookmarklist:', myBooks)
-  console.log('BookMarkPost:', BookMarkPost)
+  const { posts: myBookmarkPost } = useFetchToggledPost({
+    userId: user?.uid || '',
+    collectionName: 'BOOKMARK',
+  })
 
-  const filterPost = Array.isArray(BookMarkPost)
-    ? myBooks?.map(bookmark =>
-        BookMarkPost.find(post => post.postId === bookmark.postId),
-      )
-    : []
+  if (!user) {
+    return <p>Please log in to view your bookmarks.</p>
+  }
 
-  console.log('filterPOst:', filterPost)
+  const totalCount = myBookmarkPost.length
 
-  const totalCount = filterPost?.filter(Boolean)?.length || 0
   return (
     <S.Wrapper>
       <S.TitleWrapper>
@@ -31,20 +28,20 @@ export default function BookmarkPostList() {
           <FaArrowAltCircleRight />
         </S.More>
       </S.TitleWrapper>
-      {filterPost && filterPost.length > 0
-        ? filterPost
-            .filter((post): post is PostProps => !!post) // undefined 필터링
-            .slice(0, 5)
-            .map((post: PostProps) => (
+
+      {totalCount > 0
+        ? myBookmarkPost
+            .slice(0, 3)
+            .map(post => (
               <ListBody
                 isCompact={true}
                 renderType="post"
                 item={post}
-                key={post.postId}
+                key={post.id}
               />
             ))
         : 'no post'}
-      {Array.isArray(myBooks) && myBooks.length > 3 ? (
+      {Array.isArray(myBookmarkPost) && totalCount > 3 ? (
         <>
           <Spacing size={10} />
           <S.More href="/mypage/myposts">

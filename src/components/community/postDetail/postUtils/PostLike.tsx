@@ -1,35 +1,32 @@
-import React, { useEffect, useState } from 'react'
 import * as S from './postUtils.styles'
 import { AiFillLike, AiOutlineLike } from 'react-icons/ai'
 import { useAuth } from '@/hooks/useAuth'
-import { useLike } from '@/hooks/useLike'
-import { PostProps } from '@/utils/types'
+import { useToggleItem } from '@/hooks/useToggleItem'
+import { useFirebaseCRUD } from '@/hooks/useFirebaseCRUD'
 
-export interface LikeProps {
-  post: PostProps
-  getPost: (id: string) => Promise<void>
-}
-
-export default function PostLike({ post, getPost }: LikeProps) {
+export default function PostLike({ postId }: { postId: string }) {
   const { user } = useAuth()
-  const { likes, mutate: toggleLike } = useLike()
-  const isLike = !!likes?.some(
-    like => like.postId === post.postId && like.userId === user?.uid,
-  ) // isLike 기본값이 false
+  const {
+    isToggled: isLike,
+    toggleCount: likeCount,
+    toggleItem: toggleLike,
+  } = useToggleItem('LIKE', postId)
 
-  const likeCount =
-    likes?.filter(like => like.postId === post.postId).length || 0
-
-  const handletoggleLike = () => {
+  const handleToggleLike = (postId: string) => {
     if (!user) {
       alert('Please use after signing in.')
       return
     }
 
-    toggleLike({ post })
+    toggleLike()
   }
+
   return (
-    <S.UtilBtn type="button" onClick={handletoggleLike} $active={isLike}>
+    <S.UtilBtn
+      type="button"
+      onClick={() => handleToggleLike(postId)}
+      $active={isLike}
+    >
       {isLike ? <AiFillLike /> : <AiOutlineLike />}
       <small>{likeCount}</small>
     </S.UtilBtn>

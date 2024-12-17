@@ -136,7 +136,7 @@ export const DeleteBtn = styled.button`
   padding: 0;
   transition: all 0.3s ease;
 
-  &:nth-child(2) {
+  &:nth-of-type(2) {
     font-size: 14px;
   }
 

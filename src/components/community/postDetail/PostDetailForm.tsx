@@ -1,63 +1,36 @@
-import React, { useContext, useEffect, useState } from 'react'
 import * as S from './PostDetailForm.styles'
 import { useRouter } from 'next/router'
-import * as postService from '@/remote/postService'
 import PostHeader from './PostHeader'
-import AuthContext from '../../../hooks/useAuth'
 import 'react-quill/dist/quill.snow.css'
 import Comment from '../comment/Comment'
 import PostUtils from './postUtils/PostUtils'
-import { PostProps } from '@/utils/types'
 import { useAuth } from '@/hooks/useAuth'
+import { useEffect } from 'react'
+import { usePost } from '@/hooks/usePost'
 
 export default function PostDetailForm() {
-  const [post, setPost] = useState<PostProps | null>(null)
   const router = useRouter()
-  const { postId } = router.query
   const { user } = useAuth()
+  const { postId } = router.query as { postId: string }
 
-  const fetchPost = async (id: string) => {
-    try {
-      const fetchData = await postService.getPost(id)
-      if (fetchData) setPost(fetchData)
-    } catch (err) {
-      console.log('FetchPost Error:', err)
+  const { postDetail: post, deletePost } = usePost(postId)
+
+  useEffect(() => {
+    if (!post) {
+      console.log('Loading post data...')
     }
-  }
+  }, [post])
 
   const handleDelete = async () => {
     const confirm = window.confirm('Are you sure you want to delete?')
 
-    try {
-      if (confirm && post && postId) {
-        await postService.removePost(postId as string)
-        alert('Successfully deleted')
+    if (confirm && postId && user?.uid === post?.userId) {
+      try {
+        await deletePost(postId)
         router.push('/community')
-      }
-    } catch (e: any) {
-      console.log(e)
-      alert('Failed to submit post. Please try again later')
+      } catch (e: any) {}
     }
   }
-
-  useEffect(() => {
-    ////params?.id의 타입이 string | string[] -> getPost 함수에서 id를 직접 사용할 수 없음.
-    ////params?.id가 배열일 경우 첫 번째 값을 사용하도록 처리
-    if (typeof postId === 'string') {
-      postService
-        .getPost(postId)
-        .then(fetchData => {
-          if (fetchData) {
-            setPost(fetchData)
-          }
-        })
-        .catch(err => {
-          console.log(err)
-          alert('Failed to fetch post')
-          router.push('/community')
-        })
-    }
-  }, [postId])
 
   return (
     <S.Wrapper>
@@ -94,8 +67,8 @@ export default function PostDetailForm() {
                 <div dangerouslySetInnerHTML={{ __html: post.content }} />
               </S.Content>
             )}
-            <PostUtils post={post} getPost={fetchPost} />
-            <Comment post={post} getPost={fetchPost} />
+            <PostUtils postId={postId} />
+            <Comment />
           </S.PostWrapper>
         </>
       ) : (

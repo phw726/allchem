@@ -1,14 +1,15 @@
 import * as S from './mypage.styles'
 import { FaArrowAltCircleRight } from 'react-icons/fa'
 import ListBody from '../layout/ListBody'
-import { usePost } from '@/hooks/usePost'
 import { IoMdMore } from 'react-icons/io'
 import Spacing from '../common/Spacing'
 import { useAuth } from '@/hooks/useAuth'
+import { usePost } from '@/hooks/usePost'
 
 export default function MyPost() {
   const { user } = useAuth()
-  const { post: myPosts, isLoading } = usePost({ userId: user?.uid })
+  const { userPosts: myPosts = [] } = usePost('', user?.uid)
+
   const totalCount = Array.isArray(myPosts) ? myPosts?.length : 0
 
   return (

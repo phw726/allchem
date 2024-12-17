@@ -1,42 +1,60 @@
-import {
-  getComments,
-  updateComment,
-  writeComment,
-} from '@/remote/commentService'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useFirebaseCRUD } from './useFirebaseCRUD'
 import { CommentProps } from '@/utils/types'
-import { useMutation, useQuery, useQueryClient } from 'react-query'
 
-export function usePostComments(postId: string) {
-  const {
-    data: comments,
-    isLoading,
-    error,
-  } = useQuery(['comments', postId], () => getComments({ postId }), {
+export function useComment(postId?: string, userId?: string) {
+  const client = useQueryClient()
+  const { fetchAll, create, update, remove } = useFirebaseCRUD('COMMENT')
+
+  // 특정 게시글의 댓글 조회
+  const { data: comments = [] } = useQuery({
+    queryKey: ['comments', postId],
+    queryFn: async () =>
+      await fetchAll([{ field: 'postId', operator: '==', value: postId }]),
     enabled: !!postId,
   })
 
-  return { comments, isLoading, error }
-}
+  // 특정 유저가 작성한 댓글 조회
+  const { data: userComments = [] } = useQuery({
+    queryKey: ['userComments', userId],
+    queryFn: async () =>
+      userId
+        ? await fetchAll([{ field: 'userId', operator: '==', value: userId }])
+        : [],
+    enabled: !!userId,
+  })
 
-export function useUserComment(commentId?: string) {
-  const client = useQueryClient()
-
-  const { mutate, isLoading, error } = useMutation(
-    (newComment: Omit<CommentProps, 'commentId'>) =>
-      commentId
-        ? updateComment(commentId, newComment)
-        : writeComment(newComment),
-    {
-      onSuccess: () => {
-        client.invalidateQueries(['comments'])
-        alert('Successfully added/updated post!')
-      },
-      onError: (error: Error) => {
-        alert('Failed to update the comment. Please try again later.')
-        console.error(error)
-      },
+  const saveComment = useMutation({
+    mutationFn: async (comment: CommentProps) => {
+      if (comment.commentId) {
+        await update(comment.commentId, comment)
+      } else {
+        const result = await create(comment)
+        const updatedComment = { ...comment, commentId: result.id }
+        await update(result.id, updatedComment)
+        return { commentId: result.id }
+      }
     },
-  )
+    onSuccess: () => {
+      client.invalidateQueries({ queryKey: ['comments', postId] })
+      client.invalidateQueries({ queryKey: ['userComments', userId] })
+    },
+  })
 
-  return { mutate, isLoading, error }
+  const deleteComment = useMutation({
+    mutationFn: async (commentId: string) => {
+      await remove(commentId)
+    },
+    onSuccess: () => {
+      client.invalidateQueries({ queryKey: ['comments', postId] })
+      client.invalidateQueries({ queryKey: ['userComments', userId] })
+    },
+  })
+
+  return {
+    comments,
+    userComments,
+    saveComment: saveComment.mutate,
+    deleteComment: deleteComment.mutate,
+  }
 }

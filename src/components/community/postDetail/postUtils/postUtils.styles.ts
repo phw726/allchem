@@ -16,7 +16,7 @@ export const UtilItems = styled.div`
   align-items: center;
   cursor: pointer;
 
-  &:nth-child(2) {
+  &:nth-of-type(2) {
     font-size: 14px;
   }
 
@@ -127,8 +127,8 @@ export const ModalItem = styled(Link)`
   display: flex;
   width: 50px;
   height: 50px;
-  margin-top: 8px;
-  margin-bottom: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
   border-radius: 50%;
   font-size: 25px;
   box-shadow: 0px 2px 7px rgba(0, 2, 61, 0.5);
@@ -157,8 +157,8 @@ export const ModalItem = styled(Link)`
 export const LinkWrapper = styled.div`
   display: flex;
   width: auto;
-  height: 20px;
-  margin: 10px 4px;
+  height: auto;
+  margin: 8px 4px;
   border-radius: 2px;
   align-items: center;
 `
@@ -170,7 +170,7 @@ export const PostLink = styled.div`
   font-size: 14px;
   background-color: #eff0f0;
   color: #22272b;
-  margin: 2px 5px 2px 0;
+  margin: 2px 8px 2px 0;
   padding: 4px;
   cursor: text;
 
@@ -183,15 +183,18 @@ export const PostLink = styled.div`
 `
 
 export const LinkCopyBtn = styled.button`
-  width: 48px;
+  width: auto;
   height: auto;
-  padding: 6px 4px;
-  border-radius: 4px;
-  border: 2px solid #2e2da6;
+  padding: 6px 8px;
+  border-radius: 2px;
+  border: 1px solid #e6e6e6;
   color: royalblue;
-  background-color: #fff;
+  background-color: #e6e6e6;
   font-weight: 600;
   outline: none;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
 

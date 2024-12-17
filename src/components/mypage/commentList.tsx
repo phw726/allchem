@@ -1,42 +1,17 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { PostProps } from '../community/postForm/PostForm'
-import AuthContext from '../../hooks/useAuth'
+import React, { useEffect, useState } from 'react'
 import * as S from './mypage.styles'
 import { FaArrowAltCircleRight } from 'react-icons/fa'
-import {
-  collection,
-  onSnapshot,
-  orderBy,
-  query,
-  where,
-} from '@firebase/firestore'
-import { db } from '../../../firebase'
 import ListBody from '../layout/ListBody'
+import { useAuth } from '@/hooks/useAuth'
+import { useComment } from '@/hooks/useComment'
 
 export default function CommentList() {
-  const [myComment, setMyComment] = useState<PostProps[]>([])
-  const { user } = useContext(AuthContext)
+  const { user } = useAuth()
+  const { userComments = [] } = useComment('', user?.uid)
 
-  useEffect(() => {
-    if (user) {
-      let postsRef = collection(db, 'posts')
+  const myComments = Array.isArray(userComments) ? userComments : []
 
-      const myCommentQuery = query(
-        postsRef,
-        where('comments', 'array-contains', { uid: user.uid }),
-        orderBy('comments.createdAt', 'desc'),
-      )
-
-      onSnapshot(myCommentQuery, snapShot => {
-        const dataObj = snapShot.docs.map(doc => ({
-          ...doc.data(),
-          id: doc?.id,
-        }))
-        setMyComment(dataObj as PostProps[])
-      })
-    }
-  }, [user])
-  const totalCount = myComment.length
+  const totalCount = myComments?.length
 
   return (
     <S.Wrapper>
@@ -46,9 +21,9 @@ export default function CommentList() {
           <FaArrowAltCircleRight />
         </S.More>
       </S.TitleWrapper>
-      {myComment && myComment.length > 0
-        ? myComment
-            .slice(0, 5)
+      {myComments && totalCount > 0
+        ? myComments
+            .slice(0, 3)
             .map(post => (
               <ListBody renderType="post" item={post} key={post.createdAt} />
             ))

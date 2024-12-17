@@ -1739,6 +1739,7 @@ __metadata:
     react-dom: "npm:^18"
     react-dropzone: "npm:^14.2.9"
     react-icons: "npm:^5.3.0"
+    react-query: "npm:^3.39.3"
     react-quill: "npm:^2.0.0"
     react-router-dom: "npm:^6.26.2"
     swiper: "npm:^11.1.14"
@@ -4799,7 +4800,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-query@npm:*":
+"react-query@npm:*, react-query@npm:^3.39.3":
   version: 3.39.3
   resolution: "react-query@npm:3.39.3"
   dependencies:

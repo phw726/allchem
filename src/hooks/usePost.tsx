@@ -1,64 +1,68 @@
-import { PostProps } from '@/utils/types'
-import { getMyPost, getPost, updatePost, writePost } from '@/remote/postService'
-import { useRouter } from 'next/router'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useFirebaseCRUD } from './useFirebaseCRUD'
+import { PostProps } from '@/utils/types'
 
-export function usePost({
-  postId,
-  userId,
-}: {
-  postId?: string
-  userId?: string
-}) {
+export function usePost(postId?: string, userId?: string) {
   const client = useQueryClient()
-  const router = useRouter()
+  const { fetchAll, fetchById, create, update, remove } =
+    useFirebaseCRUD('POST')
 
-  const {
-    data: post,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ['post', { postId, userId }],
-    enabled: !!postId || !!userId,
-    queryFn: async () => {
+  const { data: posts = [] } = useQuery({
+    queryKey: ['posts', postId],
+    queryFn: async () => (userId ? await fetchAll([]) : []),
+    enabled: !!postId,
+  })
+
+  const { data: postDetail } = useQuery({
+    queryKey: ['postDetail', postId],
+    queryFn: async () => (postId ? await fetchById(postId) : null),
+    enabled: !!postId,
+  })
+
+  const { data: userPosts = [] } = useQuery({
+    queryKey: ['userPosts', userId],
+    queryFn: async () =>
+      userId
+        ? await fetchAll([{ field: 'userId', operator: '==', value: userId }])
+        : [],
+    enabled: !!userId,
+  })
+
+  const savePost = useMutation({
+    mutationFn: async (post: PostProps) => {
       if (postId) {
-        return await getPost(postId)
-      } else if (userId) {
-        return await getMyPost({ userId }) // 항상 배열로 반환
+        await update(postId, post)
       } else {
-        return []
-        // throw new Error('Either postId or userId must be provided.')
+        const result = await create(post)
+        const updatedPost = { ...post, postId: result.id }
+        await update(result.id, updatedPost)
       }
+    },
+    onSuccess: () => {
+      client.invalidateQueries({ queryKey: ['posts', postId] })
+      client.invalidateQueries({ queryKey: ['userPosts', userId] })
+    },
+    onError: (error: Error) => {
+      console.error(`Error saving post:`, error)
     },
   })
 
-  const { mutate: savePost, isLoading: isSaving } = useMutation(
-    (newPost: Omit<PostProps, 'postId'>) =>
-      postId ? updatePost(postId, newPost) : writePost(newPost),
-
-    {
-      onSuccess: () => {
-        client.invalidateQueries(['post'])
-        alert('Successfully added/updated post!')
-        router.push('/community')
-      },
-      onError: (error: Error) => {
-        console.error(error)
-        alert('Failed to save the post. Please try again later.')
-        router.push('/community')
-      },
+  const deletePost = useMutation({
+    mutationFn: async (postId: string) => await remove(postId),
+    onSuccess: () => {
+      client.invalidateQueries({ queryKey: ['posts'] })
+      client.invalidateQueries({ queryKey: ['userPosts'] })
     },
-  )
+    onError: (error: Error) => {
+      console.error(`Error deleting post:`, error)
+    },
+  })
 
   return {
-    post: postId
-      ? (post as PostProps | null)
-      : Array.isArray(post)
-        ? (post as PostProps[]) // 배열로 캐스팅
-        : [],
-    isLoading,
-    error,
-    savePost,
-    isSaving,
+    posts,
+    postDetail,
+    userPosts,
+    savePost: savePost.mutate,
+    deletePost: deletePost.mutate,
   }
 }

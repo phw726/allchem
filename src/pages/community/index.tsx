@@ -4,14 +4,6 @@ import ListBody from '@/components/layout/ListBody'
 import ListHeader from '@/components/layout/ListHeader'
 import { SearchButton } from '@/components/search/SearchForm/SearchForm.styles'
 import styled from '@emotion/styled'
-import {
-  collection,
-  doc,
-  getDocs,
-  orderBy,
-  query,
-  where,
-} from '@firebase/firestore'
 import * as postService from '@/remote/postService'
 
 import { getAuth } from 'firebase/auth'

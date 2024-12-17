@@ -13,7 +13,7 @@ export type PostCategoryType = 'Community' | 'Q&A'
 
 export interface PostProps {
   postId: string
-  userId?: string
+  userId: string
   uid: string ///firebase UID
   title: string
   email: string
@@ -23,28 +23,28 @@ export interface PostProps {
   category: PostCategoryType
   files?: string[]
 }
-
 export interface CommentProps {
+  email?: string
   commentId?: string // 코멘트 Id
-  postId?: string // 게시글 Id
-  userId?: string // 현재 user Id
-  uid: string // firebase uid
+  postId: string // 게시글 Id
+  userId: string // 현재 user Id
+  uid?: string // firebase uid
   content: string
   createdAt: string
   updatedAt?: string
 }
 
 export interface LikeProps {
-  likeId: string
+  likeId?: string
   postId: string
-  userId?: string
-  uid: string
+  userId: string
+  uid?: string
   createdAt: string
 }
 
 export interface BookMarkProps {
-  postId: string
+  postId?: string
   userId?: string
-  uid: string
-  createdAt: string
+  uid?: string
+  createdAt?: string
 }

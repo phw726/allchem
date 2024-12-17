@@ -19,14 +19,14 @@ interface ListBodyProps {
     user?: string
 
     ///post
-    postId: string
+    postId?: string
     title?: string
-    createdAt: string
+    createdAt?: string
     updatedAt?: string
-    content: string
+    content?: string
     email?: string
     name?: string
-    uid: string
+    uid?: string
   }
 
   renderType: 'compound' | 'post'
@@ -38,7 +38,7 @@ export default function ListBody({
   renderType,
   isCompact = false,
 }: ListBodyProps) {
-  const summary = dangerHTML(item.content).slice(0, 200)
+  const summary = dangerHTML(item.content as string).slice(0, 200)
 
   const href =
     renderType === 'compound'
@@ -74,7 +74,7 @@ export default function ListBody({
                 {item?.email || item?.name} <LuDot css={dotStyle} />
                 {item?.updatedAt
                   ? `${formatTimestamp(item.updatedAt)} (Edited) `
-                  : formatTimestamp(item.createdAt)}
+                  : formatTimestamp(item.createdAt as string)}
               </S.PostInfo>
               <S.PostName css={isCompact ? CompactStyle : undefined}>
                 {item.title}
