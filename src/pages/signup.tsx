@@ -6,7 +6,7 @@ import React from 'react'
 export default function SignUpPage() {
   return (
     <Layout isFooter={false}>
-      <ListHeader renderType="post" category="CREATE ACCOUNT" />
+      <ListHeader renderType="post" pageTitle="CREATE ACCOUNT" />
       <LogInForm type="signup" />
     </Layout>
   )

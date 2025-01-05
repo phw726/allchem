@@ -3,13 +3,16 @@ import * as S from './mypage.styles'
 import { FaArrowAltCircleRight } from 'react-icons/fa'
 import ListBody from '../layout/ListBody'
 import { useAuth } from '@/hooks/useAuth'
-import { useComment } from '@/hooks/useComment'
+import { useFetchPost } from '@/hooks/useFetchPost'
 
 export default function CommentList() {
   const { user } = useAuth()
-  const { userComments = [] } = useComment('', user?.uid)
+  const { posts: comments } = useFetchPost({
+    userId: user?.uid || '',
+    collectionName: 'COMMENT',
+  })
 
-  const myComments = Array.isArray(userComments) ? userComments : []
+  const myComments = Array.isArray(comments) ? comments : []
 
   const totalCount = myComments?.length
 
@@ -23,9 +26,14 @@ export default function CommentList() {
       </S.TitleWrapper>
       {myComments && totalCount > 0
         ? myComments
-            .slice(0, 3)
+            .slice(0, 10)
             .map(post => (
-              <ListBody renderType="post" item={post} key={post.createdAt} />
+              <ListBody
+                renderType="comment"
+                item={post}
+                isCompact={true}
+                key={post.id}
+              />
             ))
         : 'no comment'}
     </S.Wrapper>

@@ -2,7 +2,6 @@ import * as S from './postUtils.styles'
 import { AiFillLike, AiOutlineLike } from 'react-icons/ai'
 import { useAuth } from '@/hooks/useAuth'
 import { useToggleItem } from '@/hooks/useToggleItem'
-import { useFirebaseCRUD } from '@/hooks/useFirebaseCRUD'
 
 export default function PostLike({ postId }: { postId: string }) {
   const { user } = useAuth()

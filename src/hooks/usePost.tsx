@@ -2,15 +2,28 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useFirebaseCRUD } from './useFirebaseCRUD'
 import { PostProps } from '@/utils/types'
 
-export function usePost(postId?: string, userId?: string) {
+export function usePost({
+  postId,
+  userId,
+  category,
+}: {
+  postId?: string
+  userId?: string
+  category?: string
+}) {
   const client = useQueryClient()
   const { fetchAll, fetchById, create, update, remove } =
     useFirebaseCRUD('POST')
 
   const { data: posts = [] } = useQuery({
-    queryKey: ['posts', postId],
-    queryFn: async () => (userId ? await fetchAll([]) : []),
-    enabled: !!postId,
+    queryKey: ['posts', category],
+    queryFn: async () =>
+      await fetchAll(
+        category && category !== 'All'
+          ? [{ field: 'category', operator: '==', value: category }]
+          : [],
+      ),
+    enabled: !postId && !userId,
   })
 
   const { data: postDetail } = useQuery({
@@ -39,7 +52,7 @@ export function usePost(postId?: string, userId?: string) {
       }
     },
     onSuccess: () => {
-      client.invalidateQueries({ queryKey: ['posts', postId] })
+      client.invalidateQueries({ queryKey: ['posts', category] })
       client.invalidateQueries({ queryKey: ['userPosts', userId] })
     },
     onError: (error: Error) => {
@@ -50,7 +63,7 @@ export function usePost(postId?: string, userId?: string) {
   const deletePost = useMutation({
     mutationFn: async (postId: string) => await remove(postId),
     onSuccess: () => {
-      client.invalidateQueries({ queryKey: ['posts'] })
+      client.invalidateQueries({ queryKey: ['posts', category] })
       client.invalidateQueries({ queryKey: ['userPosts'] })
     },
     onError: (error: Error) => {

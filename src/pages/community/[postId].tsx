@@ -1,7 +1,5 @@
 import PostDetailForm from '@/components/community/postDetail'
 import Layout from '@/components/layout/Layout'
-import ListHeader from '@/components/layout/ListHeader'
-import React from 'react'
 
 export default function PostDetailPage() {
   ///getStaticProps : 블로그 등 정적페이지 생성

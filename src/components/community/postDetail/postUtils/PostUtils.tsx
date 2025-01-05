@@ -3,7 +3,6 @@ import * as S from './postUtils.styles'
 import PostBookmark from './PostBookmark'
 import PostLike from './PostLike'
 import PostShared from './PostShared'
-import { PostProps } from '@/utils/types'
 
 const utilComponents = [
   { component: PostLike, key: 'like' },

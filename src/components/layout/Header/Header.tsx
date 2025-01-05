@@ -10,7 +10,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { getAuth, signOut } from 'firebase/auth'
 import { useAuth } from '@/hooks/useAuth'
 import { useSearchStore } from '@/state/searchState'
-import SearchForm from '@/components/search/SearchForm/SearchForm'
+import SearchForm from '@/components/search/SearchForm'
 
 export default function Header() {
   const { searchWrd, setSearchWrd } = useSearchStore()

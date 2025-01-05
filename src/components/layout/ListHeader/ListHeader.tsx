@@ -3,40 +3,27 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import SearchForm from '@/components/search/SearchForm'
+import Spacing from '@/components/common/Spacing'
 
 interface ListHeaderProps {
-  category: string
+  pageTitle: string
   renderType: 'compound' | 'post' // 렌더링 방식
 }
 
-export default function ListHeader({ renderType, category }: ListHeaderProps) {
-  const [searchValue, setSearchValue] = useState('') // 검색어 상태
-
-  const router = useRouter()
-
-  const handleSearch = (value: string) => {
-    if (value) {
-      router.push(`/search?keyword=${value}`)
-    } else {
-      console.error('No search')
-    }
-  }
+export default function ListHeader({ renderType, pageTitle }: ListHeaderProps) {
   return (
     <S.Wrapper>
-      <S.MenuText>{category}</S.MenuText>
-      {/* {renderType === 'compound' ? (
-        <S.SearchWrapper>
-          <SearchForm type="main" onSearch={handleSearch} />
-          <S.SearchButton
-            type="submit"
-            onClick={() => handleSearch(searchValue)}
-          >
-            Search
-          </S.SearchButton>
-        </S.SearchWrapper>
-      ) : (
-        ''
-      )} */}
+      <S.MenuText>
+        {renderType === 'compound' && pageTitle ? (
+          <>
+            <S.MenuSubText>Compound Summary</S.MenuSubText>
+            <Spacing size={0} />
+            {pageTitle}
+          </>
+        ) : (
+          `${pageTitle}`
+        )}
+      </S.MenuText>
     </S.Wrapper>
   )
 }

@@ -1,7 +1,7 @@
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import Link from 'next/link'
-import { SearchButton } from '../search/SearchForm/SearchForm.styles'
+import { SearchButton } from '../search/SearchForm.styles'
 import Image from 'next/image'
 
 export const Wrapper = styled.form`

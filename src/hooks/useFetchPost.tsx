@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useFirebaseCRUD } from './useFirebaseCRUD'
 
-export function useFetchToggledPost({
+export function useFetchPost({
   userId,
   collectionName,
 }: {
   userId: string
-  collectionName: 'LIKE' | 'BOOKMARK'
+  collectionName: 'LIKE' | 'BOOKMARK' | 'COMMENT'
 }) {
   const { fetchPostandToggle } = useFirebaseCRUD(collectionName)
   const [posts, setPosts] = useState<{ id: string; [key: string]: any }[]>([])

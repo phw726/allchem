@@ -5,13 +5,7 @@ import Link from 'next/link'
 export const ListWrapper = styled.div`
   width: 100%;
   height: auto;
-  border-top: 1px solid #e0e0e0;
-
-  border-top: 1px solid #e0e0e0;
-
-  &:nth-of-type(4) {
-    border-bottom: 1px solid #e0e0e0;
-  }
+  border-bottom: 1px solid #e0e0e0;
 `
 
 export const ListItem = styled(Link)`
@@ -20,6 +14,10 @@ export const ListItem = styled(Link)`
   height: auto;
   min-height: 120px;
   align-items: center;
+
+  /* &:first-child {
+    border-top: 1px solid #e0e0e0;
+  } */
 
   &:hover {
     color: royalblue;
@@ -106,6 +104,11 @@ export const ItemInfo = styled.div`
   &.item-name {
     color: #22272b;
   }
+`
+
+export const Comment = styled(ItemInfo)`
+  color: royalblue;
+  margin-bottom: 10px;
 `
 export const PostInfo = styled.div`
   font-size: 12px;

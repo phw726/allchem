@@ -5,13 +5,18 @@ export const Wrapper = styled.div`
   height: auto;
   margin-top: 150px;
   padding: 0 20px;
+  font-family: monospace;
 `
 
 export const MenuText = styled.div`
   font-size: 30px;
-  color: #22272b;
   font-weight: 600;
   margin-bottom: 40px;
+  color: #22272b;
+`
+export const MenuSubText = styled(MenuText)`
+  font-size: 20px;
+  font-weight: 500;
 `
 
 export const SearchWrapper = styled.div`

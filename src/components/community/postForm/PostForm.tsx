@@ -5,7 +5,7 @@ import FileDrop, { FileWithPreview } from './FileDrop'
 import { useRouter } from 'next/router'
 import { useAuth } from '../../../hooks/useAuth'
 import { PostCategoryType, PostProps } from '@/utils/types'
-import { useData } from '@/hooks/useData'
+import { usePost } from '@/hooks/usePost'
 
 export const CATEGORIES: PostCategoryType[] = ['Community', 'Q&A']
 
@@ -13,10 +13,8 @@ export default function PostForm() {
   const router = useRouter()
   const { postId } = router.query as { postId?: string }
   const { user } = useAuth()
-  const { data: post = null, saveItem } = useData<PostProps>({
-    collectionName: 'POST',
-    itemId: postId,
-  })
+  const { postDetail: post = null, savePost } = usePost({ postId })
+
   const [title, setTitle] = useState<string>('')
   const [category, setCategory] = useState<PostCategoryType>('Community')
   const [content, setContent] = useState<string>('')
@@ -74,7 +72,7 @@ export default function PostForm() {
     }
 
     try {
-      await saveItem(data) // Save or update the post
+      await savePost(data) // Save or update the post
       router.push(postId ? `/community/${postId}` : '/community') // Redirect
     } catch (e: any) {
       console.log(e)

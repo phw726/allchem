@@ -5,10 +5,12 @@ import Pagination from '@/components/layout/Pagination'
 import Spacing from '@/components/common/Spacing'
 import SearchContent from '@/components/search/SearchContent'
 import { useRouter } from 'next/router'
-import useSearchQuery from './api/query/search/useSearchQuery'
+import useSearchQuery from './api/query/KOSHA/useSearchQuery'
 import useDebounce from '@/hooks/useDebounce'
 import { useSearchStore } from '@/state/searchState'
-import SearchForm from '@/components/search/SearchForm/SearchForm'
+import SearchForm from '@/components/search/SearchForm'
+import { debounce } from 'lodash'
+import { getSearchCondition } from '@/utils/helpers'
 
 export type ItemType = {
   casNo: string
@@ -28,18 +30,18 @@ export default function SearchPage() {
   // 데이터 가져오기
   const { data, isLoading, isFetching } = useSearchQuery({
     searchWrd: debouncedSearchWrd,
-    searchCnd: 0,
+    searchCnd: getSearchCondition(debouncedSearchWrd),
     pageNo: currentPage,
     refetchOnWindowFocus: false,
     enabled: !!searchWrd.trim(),
   })
 
-  const handleMainSearch = (searchValue: string) => {
-    setSearchWrd(searchValue)
-    // setLazyFetch(true)
-    setCurrentPage(1)
-    router.push(`/search?keyword=${searchValue}`)
-  }
+  // const handleMainSearch = (searchValue: string) => {
+  //   setSearchWrd(searchValue)
+  //   // setLazyFetch(true)
+  //   setCurrentPage(1)
+  //   router.push(`/search?keyword=${searchValue}`)
+  // }
 
   // Pagination 페이지 변경
   const handleSetPage = (page: number) => {
@@ -62,11 +64,9 @@ export default function SearchPage() {
   const totalCount = data?.totalCount || 0
   const items = data?.itemList || []
 
-  console.log('items', items)
-
   return (
     <Layout>
-      <ListHeader renderType="compound" category="INTEGRATED SEARCH" />
+      <ListHeader renderType="post" pageTitle="INTEGRATED SEARCH" />
       <SearchForm type="main" />
       {/* <SearchForm
         onSearch={handleMainSearch}

@@ -13,7 +13,7 @@ export default function PostDetailForm() {
   const { user } = useAuth()
   const { postId } = router.query as { postId: string }
 
-  const { postDetail: post, deletePost } = usePost(postId)
+  const { postDetail: post, deletePost } = usePost({ postId })
 
   useEffect(() => {
     if (!post) {

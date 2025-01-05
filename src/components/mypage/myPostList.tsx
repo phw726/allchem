@@ -1,47 +1,38 @@
 import * as S from './mypage.styles'
 import { FaArrowAltCircleRight } from 'react-icons/fa'
 import ListBody from '../layout/ListBody'
-import Spacing from '../common/Spacing'
 import { IoMdMore } from 'react-icons/io'
+import Spacing from '../common/Spacing'
 import { useAuth } from '@/hooks/useAuth'
-import { useFetchPost } from '@/hooks/useFetchPost'
+import { usePost } from '@/hooks/usePost'
 
-export default function BookmarkPostList() {
+export default function MyPostList() {
   const { user } = useAuth()
+  const { userPosts: myPosts = [] } = usePost({ userId: user?.uid })
 
-  const { posts: myBookmarkPost } = useFetchPost({
-    userId: user?.uid || '',
-    collectionName: 'BOOKMARK',
-  })
-
-  if (!user) {
-    return <p>Please log in to view your bookmarks.</p>
-  }
-
-  const totalCount = myBookmarkPost.length
+  const totalCount = Array.isArray(myPosts) ? myPosts?.length : 0
 
   return (
     <S.Wrapper>
       <S.TitleWrapper>
-        <S.Title>BOOKMARKS({totalCount})</S.Title>
-        <S.More href="/mypage/bookmarks">
+        <S.Title>MY POSTS({totalCount})</S.Title>
+        <S.More href="/mypage/myposts">
           <FaArrowAltCircleRight />
         </S.More>
       </S.TitleWrapper>
-
-      {totalCount > 0
-        ? myBookmarkPost
-            .slice(0, 10)
+      {Array.isArray(myPosts) && myPosts.length > 0
+        ? myPosts
+            .slice(0, 3)
             .map(post => (
               <ListBody
                 isCompact={true}
                 renderType="post"
                 item={post}
-                key={post.id}
+                key={post.createdAt}
               />
             ))
         : 'no post'}
-      {Array.isArray(myBookmarkPost) && totalCount > 3 ? (
+      {Array.isArray(myPosts) && myPosts.length > 3 ? (
         <>
           <Spacing size={10} />
           <S.More href="/mypage/myposts">

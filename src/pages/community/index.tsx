@@ -1,17 +1,14 @@
-import Spacing from '@/components/common/Spacing'
 import Layout from '@/components/layout/Layout'
 import ListBody from '@/components/layout/ListBody'
 import ListHeader from '@/components/layout/ListHeader'
-import { SearchButton } from '@/components/search/SearchForm/SearchForm.styles'
+import { SearchButton } from '@/components/search/SearchForm.styles'
 import styled from '@emotion/styled'
-import * as postService from '@/remote/postService'
-
 import { getAuth } from 'firebase/auth'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { db } from '../../../firebase'
 import Pagination from '@/components/layout/Pagination'
-import { PostProps } from '@/utils/types'
+import { usePost } from '@/hooks/usePost'
+import { useRouter } from 'next/router'
 
 export type CategoryType = 'All' | 'Notice' | 'Community' | 'Q&A'
 export const CATEGORIES: CategoryType[] = ['All', 'Notice', 'Community', 'Q&A']
@@ -19,9 +16,11 @@ export const CATEGORIES: CategoryType[] = ['All', 'Notice', 'Community', 'Q&A']
 export default function CommunityPage() {
   const [isLogIn, setIsLogIn] = useState(false)
   const [activeTab, setactiveTab] = useState<CategoryType>('All')
-  const [posts, setPosts] = useState<PostProps[]>([])
   const [currentPage, setCurrentPage] = useState(1)
   const auth = getAuth()
+  const router = useRouter()
+  const { postId } = router.query as { postId: string }
+  const { posts } = usePost({ postId, category: activeTab })
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
@@ -29,22 +28,6 @@ export default function CommunityPage() {
     })
     return () => unsubscribe()
   }, [auth])
-
-  const getPostList = async (category: string) => {
-    try {
-      const data = await postService.getPosts(
-        activeTab === 'All' ? undefined : activeTab,
-      )
-      // const fetchPost = await postService.getPosts(category)
-      setPosts(data)
-    } catch (error) {
-      console.error('Failed to fetch posts', error)
-    }
-  }
-
-  useEffect(() => {
-    getPostList(activeTab)
-  }, [activeTab])
 
   const handleSetPage = (page: number) => {
     setCurrentPage(page)
@@ -54,7 +37,7 @@ export default function CommunityPage() {
 
   return (
     <Layout>
-      <ListHeader category="COMMUNITY" renderType="post" />
+      <ListHeader pageTitle="COMMUNITY" renderType="post" />
       <FormWrapper>
         <CategoryWrapper>
           {CATEGORIES.map(category => (

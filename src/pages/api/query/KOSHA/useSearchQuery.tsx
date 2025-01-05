@@ -2,10 +2,7 @@ import { XMLParser } from 'fast-xml-parser'
 import axiosInstance from '../../axios'
 import { AxiosError } from 'axios'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
-
-interface DataListItemType {
-  [key: string]: any
-}
+import { fetchChemData } from './useCompoundData'
 
 interface LoadDataListProps {
   searchWrd: string
@@ -16,11 +13,6 @@ interface LoadDataListProps {
   enabled?: boolean
 }
 
-interface DataListResponseType {
-  totalCount: number
-  itemList: DataListItemType[]
-}
-
 // 데이터를 가져오는 함수
 const loadDataList = async ({
   searchWrd,
@@ -28,19 +20,20 @@ const loadDataList = async ({
   numOfRows = 10,
   pageNo = 1,
 }: LoadDataListProps) => {
-  const url = `?searchWrd=${encodeURIComponent(searchWrd)}&searchCnd=${searchCnd}&numOfRows=${numOfRows}&pageNo=${pageNo}`
-
   try {
-    // Axios 인스턴스를 사용하여 API 호출
-    const { data } = await axiosInstance.get(url)
-
-    console.log('Requesting URL:', axiosInstance.defaults.baseURL + url)
+    const queryParams = {
+      searchWrd,
+      searchCnd,
+      numOfRows,
+      pageNo,
+    }
+    const data = await fetchChemData('chemlist', queryParams)
 
     // XML 파싱
-    const parser = new XMLParser()
-    const jsonData = parser.parse(data)
-    const totalCount = jsonData.response.body.totalCount || 0
-    const items = jsonData.response.body.items?.item || []
+    // const parser = new XMLParser()
+    // const jsonData = parser.parse(data)
+    const totalCount = data.response.body.totalCount || 0
+    const items = data.response.body.items?.item || []
 
     const itemList = Array.isArray(items) ? items : [items]
 

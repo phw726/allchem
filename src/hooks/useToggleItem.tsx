@@ -10,6 +10,14 @@ export function useToggleItem(
   const client = useQueryClient()
   const { fetchAll, create, remove } = useFirebaseCRUD(collectionName)
 
+  const invalidateQueries = (keys: Array<string | (string | undefined)[]>) => {
+    keys.forEach(key =>
+      client.invalidateQueries({
+        queryKey: key,
+      }),
+    )
+  }
+
   const { data: toggleCount = 0 } = useQuery<number>({
     queryKey: [`${collectionName}_count`, postId],
     queryFn: async () => {
@@ -21,7 +29,7 @@ export function useToggleItem(
   })
 
   const { data: isToggled = false } = useQuery<boolean>({
-    queryKey: [collectionName, user?.uid, postId],
+    queryKey: [`${collectionName}_status`, user?.uid, postId],
     queryFn: async () => {
       if (!user) return false
       const toggleItem = await fetchAll([
@@ -33,10 +41,22 @@ export function useToggleItem(
     enabled: !!user,
   })
 
+  const { data: userToggledItems = [] } = useQuery({
+    queryKey: [`${collectionName}_list`, user?.uid],
+    queryFn: async () => {
+      if (!user) return []
+      return await fetchAll([
+        { field: 'userId', operator: '==', value: user.uid },
+      ])
+    },
+    enabled: !!user,
+  })
+
   const { mutate: toggleItem } = useMutation({
     mutationFn: async () => {
       if (!user)
         throw new Error(`User must be logged in to toggle ${collectionName}.`)
+
       if (isToggled) {
         const toggledItem = await fetchAll([
           { field: 'postId', operator: '==', value: postId },
@@ -59,34 +79,26 @@ export function useToggleItem(
         return { action: 'added', postId }
       }
     },
-    onSuccess: result => {
-      client.invalidateQueries({
-        queryKey: [collectionName, user?.uid, postId],
-      })
-      client.invalidateQueries({
-        queryKey: [`${collectionName}_count`, postId],
-      })
 
-      if (result && result.action === 'removed') {
-        alert(`${collectionName} removed successfully!`)
-      } else if (result && result.action === 'added') {
-        alert(`${collectionName} saved successfully!`)
-      }
+    onSuccess: result => {
+      const keysToInvalidate = [
+        [collectionName],
+        [`${collectionName}_list`, user?.uid],
+        [`${collectionName}_count`, postId],
+        [`${collectionName}_status`, user?.uid, postId],
+      ]
+
+      invalidateQueries(keysToInvalidate)
+
+      const actionMessage =
+        result?.action === 'removed'
+          ? `${collectionName} removed successfully!`
+          : `${collectionName} saved successfully!`
+      alert(actionMessage)
     },
     onError: (error: Error) => {
       alert(`Failed to save the ${collectionName}. Please try again.`)
     },
-  })
-
-  const { data: userToggledItems = [] } = useQuery({
-    queryKey: [`${collectionName}_list`, user?.uid],
-    queryFn: async () => {
-      if (!user) return []
-      return await fetchAll([
-        { field: 'userId', operator: '==', value: user.uid },
-      ])
-    },
-    enabled: !!user,
   })
 
   return {

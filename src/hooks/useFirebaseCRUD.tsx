@@ -28,7 +28,7 @@ export function useFirebaseCRUD<
 
   // 모든 문서 가져오기
   const fetchAll = async (
-    filters?: Array<{ field: string; operator: string; value: any }>,
+    filters: Array<{ field: string; operator: string; value: any }> = [],
   ): Promise<DocumentData[]> => {
     const constraints: QueryConstraint[] = []
     if (filters) {

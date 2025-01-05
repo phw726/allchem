@@ -27,3 +27,8 @@ export function dangerHTML(html: string): string {
   Div.innerHTML = html
   return Div.textContent || Div.innerText || ''
 }
+
+export function getSearchCondition(searchWrd: string): number {
+  const isCasNo = /^\d{1,7}-\d{1,2}-\d{1}$/.test(searchWrd) // CAS No 형식 확인
+  return isCasNo ? 1 : 0 // 1: CAS No, 0: 국문명
+}

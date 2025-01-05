@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 
+//// Search form ////
 export const SearchWrapper = styled.form`
   display: flex;
   position: relative;
