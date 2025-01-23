@@ -1,5 +1,5 @@
 import { XMLParser } from 'fast-xml-parser'
-import axiosInstance from '../../axios'
+import axiosInstance from './axios'
 import { AxiosError } from 'axios'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { fetchChemData } from './useCompoundData'

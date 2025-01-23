@@ -3,19 +3,19 @@
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { XMLParser } from 'fast-xml-parser'
-import { parseItemsByOrderIdx } from '../../xmlParser'
+import { parseItemsByOrderIdx } from '../xmlParser'
 import {
   BASIC_INFO_PROPS,
   PHYSICAL_PROPS,
   TOXIC_PROPS,
 } from '@/utils/chemDetailProperties'
-import { mockBasicInfo, mockPhysicalProps, mockToxicProps } from '@/mockDB'
+import { mockBasicInfo, mockPhysicalProps, mockToxicProps } from '@/data/mockDB'
 
 export const fetchChemData = async (
   endpoint: string,
   params: Record<string, any> = {},
 ) => {
-  const response = await axios.get('/api/proxy', {
+  const response = await axios.get('/api/kosha/proxy', {
     params: { endpoint, ...params },
   })
 

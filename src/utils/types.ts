@@ -48,3 +48,61 @@ export interface BookMarkProps {
   uid?: string
   createdAt?: string
 }
+
+export interface EffectLevel {
+  uuid: string
+  KeyResult: boolean
+  Sex: { code: string }
+  Endpoint: { code: string }
+  EffectLevel: {
+    lowerValue: number
+    unit: { code: string }
+  }
+  cl: {
+    lowerValue: number
+    upperValue: number
+  }
+}
+
+export interface StudyRecord {
+  AdministrativeData?: {
+    Endpoint?: { code: string }
+    StudyResultType?: { code: string }
+    PurposeFlag?: { code: string }
+    Reliability?: { code: string }
+  }
+  DataSource?: {
+    Reference?: string[]
+  }
+  MaterialsAndMethods?: {
+    Guideline?: {
+      uuid: string
+      Qualifier?: { code: string }
+      Guideline?: { code: string }
+      Deviation?: { code: string }
+    }[]
+    GLPComplianceStatement?: { code: string }
+    TestType?: { code: string }
+    LimitTest?: { code: string }
+    TestMaterials?: { TestMaterialInformation: string }
+    TestAnimals?: {
+      Species?: { code: string }
+      Strain?: { code: string }
+      Sex?: { code: string }
+    }
+    AdministrationExposure?: {
+      RouteOfAdministration?: { code: string }
+    }
+  }
+  ResultsAndDiscussion?: {
+    EffectLevels?: EffectLevel[]
+  }
+  ApplicantSummaryAndConclusion?: {
+    InterpretationOfResults?: { code: string }
+  }
+}
+
+export type StudyRecordResponse = (
+  | StudyRecord
+  | { key: string; definition: string; parentKey: string }
+)[]
