@@ -13,10 +13,10 @@ export const ContentTitle = styled.div`
   font-family: monospace;
   margin-bottom: 20px;
   padding: 8px 4px;
-  border: 1px solid royalblue;
+  /* border: 1px solid royalblue; */
   border-radius: 4px;
-  background-color: royalblue;
-  text-shadow: 4px 3px 4px rgba(0, 0, 0, 0.3);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-  color: #fff;
+  /* background-color: royalblue; */
+  text-shadow: 2px 2px 1px rgba(45, 45, 45, 0.15);
+  /* box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); */
+  color: #22272b;
 `

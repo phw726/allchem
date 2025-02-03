@@ -1,27 +1,46 @@
 import * as S from './CompoundDetail.styles'
 import ListContent from '../layout/ListContent'
+import { CircleLoading } from '../common/Loading'
 
 export interface CompoundData {
-  basicInfo: { label: string; itemDetail: string }[]
-  physicalProps: { label: string; itemDetail: string }[]
-  toxicProps: { label: string; itemDetail: string }[]
+  basicInfo?: { label?: string; itemDetail?: string[] | string }[]
+  physicalProps?: { label?: string; itemDetail?: string[] | string }[]
+  toxicProps?: { label?: string; itemDetail?: string[] | string }[]
 }
 
 export default function CompoundDetailForm({
   compoundData,
+  isLoadingBasicInfo,
+  isLoadingPhysicalProps,
+  isLoadingToxicProps,
 }: {
   compoundData: CompoundData
+  isLoadingBasicInfo?: boolean
+  isLoadingPhysicalProps?: boolean
+  isLoadingToxicProps?: boolean
 }) {
   return (
     <S.Wrapper>
       {compoundData && (
         <>
           <S.ContentTitle>1. Names and Identifiers</S.ContentTitle>
-          <ListContent data={compoundData.basicInfo} />
+          {isLoadingBasicInfo ? (
+            <CircleLoading />
+          ) : (
+            <ListContent data={compoundData.basicInfo} />
+          )}
           <S.ContentTitle>2. Chemical and Physical Properties</S.ContentTitle>
-          <ListContent data={compoundData.physicalProps} />
+          {isLoadingPhysicalProps ? (
+            <CircleLoading />
+          ) : (
+            <ListContent data={compoundData.physicalProps} />
+          )}
           <S.ContentTitle>3. Toxicity</S.ContentTitle>
-          <ListContent data={compoundData.toxicProps} />
+          {isLoadingToxicProps ? (
+            <CircleLoading />
+          ) : (
+            <ListContent data={compoundData.toxicProps} />
+          )}
         </>
       )}
     </S.Wrapper>

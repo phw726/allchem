@@ -1,5 +1,7 @@
 // helper function
 
+import path from 'path'
+
 export function formatTimestamp(createdAt: string) {
   const now = new Date()
   const createdDate = new Date(createdAt)
@@ -31,4 +33,25 @@ export function dangerHTML(html: string): string {
 export function getSearchCondition(searchWrd: string): number {
   const isCasNo = /^\d{1,7}-\d{1,2}-\d{1}$/.test(searchWrd) // CAS No 형식 확인
   return isCasNo ? 1 : 0 // 1: CAS No, 0: 국문명
+}
+
+export const getPhraseMapping = (): {
+  phraseid: string
+  phrasetext: string
+}[] => {
+  const phraseFilePath = path.resolve(
+    __dirname,
+    'C:/Users/phw72/Desktop/project/allchem/src/data/iuclid6_phrase_code.json',
+  )
+  const phraseMapping = require(phraseFilePath) // JSON 파일 로드
+  return phraseMapping
+}
+
+export const getPhraseText = (
+  code: string | undefined,
+  phraseMapping: { phraseid: string; phrasetext: string }[],
+): string => {
+  if (!code) return 'Unknown'
+  const match = phraseMapping.find(phrase => phrase.phraseid === code)
+  return match ? match.phrasetext : `Unknown (${code})`
 }

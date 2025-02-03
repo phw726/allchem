@@ -35,7 +35,7 @@ const Background = styled.div`
   flex-shrink: 0;
 
   @media (max-width: 870px) {
-    width: auto;
+    width: 100px;
   }
 
   &:hover {

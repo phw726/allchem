@@ -89,6 +89,18 @@ export const HeaderUtilItems = styled(Link)`
   }
 `
 
+export const HeaderMedia = styled.div`
+  display: flex;
+  height: auto;
+  text-align: center;
+  align-items: center;
+  margin-left: 10px;
+
+  @media (max-width: 750px) {
+    display: none;
+  }
+`
+
 export const HeaderUtilButton = styled.button`
   display: flex;
   width: auto;

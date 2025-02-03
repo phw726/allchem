@@ -23,7 +23,8 @@ export const LabelText = styled.div`
   font-weight: 500;
   /* margin: 5px; */
   padding: 5px 10px;
-  word-break: keep-all;
+  /* word-break: 'break-word'; */
+  overflow-wrap: anywhere;
   line-height: 1.2;
   border-right: 1px solid #eee;
   flex-shrink: 0;
@@ -32,6 +33,7 @@ export const ItemText = styled.div`
   display: flex;
   font-size: 14px;
   margin-left: 10px;
-  line-height: 1.2;
+  line-height: 1.4;
   text-align: left;
+  /* text-indent: -5px; */
 `

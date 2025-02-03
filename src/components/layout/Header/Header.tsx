@@ -66,9 +66,12 @@ function HeaderUtils() {
   return (
     <S.HeaderUtilWrapper>
       {!isLogIn ? (
-        <S.HeaderUtilItems href="/login" className={isActive('/login')}>
-          Sign In
-        </S.HeaderUtilItems>
+        <>
+          <S.HeaderUtilItems href="/login" className={isActive('/login')}>
+            Sign In
+          </S.HeaderUtilItems>
+          <LuDot css={DotStyle} />
+        </>
       ) : (
         <>
           <S.HeaderUtilItems href="/mypage" className={isActive('/mypage')}>
@@ -79,15 +82,14 @@ function HeaderUtils() {
           </S.HeaderUtilButton>
         </>
       )}
+      <S.HeaderMedia>
+        <S.HeaderUtilItems href="/likes">My Chem</S.HeaderUtilItems>
+        <LuDot css={DotStyle} />
+        <S.HeaderUtilItems href="/membership">Membership</S.HeaderUtilItems>
+        <LuDot css={DotStyle} />
 
-      <LuDot css={DotStyle} />
-
-      <S.HeaderUtilItems href="/likes">My Chem</S.HeaderUtilItems>
-      <LuDot css={DotStyle} />
-      <S.HeaderUtilItems href="/membership">Membership</S.HeaderUtilItems>
-      <LuDot css={DotStyle} />
-
-      <S.HeaderUtilItems href="/community">Community</S.HeaderUtilItems>
+        <S.HeaderUtilItems href="/community">Community</S.HeaderUtilItems>
+      </S.HeaderMedia>
     </S.HeaderUtilWrapper>
   )
 }

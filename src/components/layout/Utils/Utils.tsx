@@ -1,15 +1,15 @@
 import { useRouter } from 'next/router'
 import * as S from './Utils.styles'
-import { IoPerson } from 'react-icons/io5'
-import { AiFillHeart } from 'react-icons/ai'
+import { IoPersonOutline } from 'react-icons/io5'
+import { FaRegHeart } from 'react-icons/fa6'
 import { FaRegBell, FaRegQuestionCircle } from 'react-icons/fa'
 import { FiShoppingCart } from 'react-icons/fi'
 import Link from 'next/link'
 
 const utilsItems = [
-  { href: '/mypage', icon: IoPerson },
+  { href: '/mypage', icon: IoPersonOutline },
   { href: '/basket', icon: FiShoppingCart },
-  { href: '/likes', icon: AiFillHeart },
+  { href: '/likes', icon: FaRegHeart },
   { href: '/alarms', icon: FaRegBell },
   { href: '/contact', icon: FaRegQuestionCircle },
 ]

@@ -106,3 +106,111 @@ export type StudyRecordResponse = (
   | StudyRecord
   | { key: string; definition: string; parentKey: string }
 )[]
+
+export interface ApiResponse {
+  ResultsAndDiscussion?: {
+    [key: string]: Array<{
+      [subKey: string]: {
+        lowerValue?: string
+        upperValue?: string
+        value?: string
+        unit?: {
+          code?: string
+        }
+      }
+    }>
+  }
+  AdministrativeData?: {
+    Endpoint?: { code: string }
+  }
+  MaterialsAndMethods?: {
+    TestAnimals?: {
+      Species?: { code: string }
+      Strain?: { code: string }
+    }
+    AdministrationExposure?: {
+      RouteOfAdministration?: { code: string }
+      TypeOfInhalationExposure?: { code: string }
+    }
+  }
+}
+
+export interface ToxicApiResponseData {
+  AdministrativeData?: {
+    Endpoint?: { code: string }
+  }
+  MaterialsAndMethods?: {
+    TestAnimals?: {
+      Species?: { code: string }
+      Strain?: { code: string }
+    }
+    AdministrationExposure?: {
+      RouteOfAdministration?: { code: string }
+      TypeOfInhalationExposure?: { code: string }
+    }
+  }
+  ResultsAndDiscussion?: {
+    EffectLevels?: {
+      Sex?: { code: string }
+      Endpoint?: { code: string }
+      EffectLevel?: {
+        upperValue?: number
+        unit?: { code: string }
+      }
+      ExposureDuration?: {
+        value?: number
+        unit?: { code: string }
+      }
+    }[]
+  }
+}
+
+export interface PhysicalApiResponseData {
+  ResultsAndDiscussion?: Record<
+    string,
+    Array<{
+      [subKey: string]: {
+        lowerValue?: string
+        upperValue?: string
+        value?: string
+        unit?: {
+          code?: string
+        }
+      }
+    }>
+  >
+}
+
+export type ValueObject =
+  | {
+      lowerValue?: string
+      upperValue?: string
+      value?: string
+      unit?: { code?: string }
+    }
+  | {
+      code: string
+    }
+
+interface Inventory {
+  InventoryEntry?: string[]
+  CASNumber?: string
+}
+
+export interface ISynonym {
+  Name: string
+}
+
+interface MolecularStructuralInfo {
+  MolecularFormula?: string
+  MolecularWeightRange?: { lowerValue?: number }
+  SmilesNotation?: string
+  InChl?: string
+}
+
+export interface IBasicInfoData {
+  IupacName?: string
+  Inventory?: Inventory
+  Synonyms?: { Synonyms: ISynonym[] }
+  MolecularStructuralInfo?: MolecularStructuralInfo
+}
