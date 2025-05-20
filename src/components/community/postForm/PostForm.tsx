@@ -105,8 +105,6 @@ export default function PostForm() {
 
   return (
     <S.Wrapper onSubmit={handleSubmit} id="">
-      <S.MainText>Post</S.MainText>
-
       <S.TitleWrapper>
         <S.Category
           name="category"

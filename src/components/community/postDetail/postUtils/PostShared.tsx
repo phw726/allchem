@@ -5,6 +5,10 @@ import { RiFacebookBoxFill, RiKakaoTalkFill } from 'react-icons/ri'
 import { SiNaver } from 'react-icons/si'
 import { FaTwitter } from 'react-icons/fa'
 
+interface ModalType {
+  handleModalOpen: () => void
+}
+
 function useOnClickOutside(
   ref: React.RefObject<HTMLDivElement>,
   handler: (event: MouseEvent | TouchEvent) => void,
@@ -40,10 +44,6 @@ export default function PostShared() {
       </S.UtilBtn>
     </>
   )
-}
-
-interface ModalType {
-  handleModalOpen: () => void
 }
 
 function Modal({ handleModalOpen }: ModalType) {

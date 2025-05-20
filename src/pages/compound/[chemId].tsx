@@ -1,27 +1,46 @@
 import Layout from '@/components/layout/Layout'
-import ListHeader from '@/components/layout/ListHeader'
 import { useRouter } from 'next/router'
-import CompoundDetailForm from '@/components/compound/CompoundDetail'
 import { useCompoundData } from '../api/kosha/useCompoundData'
 import styled from '@emotion/styled'
 import { useIuclidCompound } from '../api/iuclid6/useIuclidCompound'
-import { CircleLoading, TextLoading } from '@/components/common/Loading'
+import dynamic from 'next/dynamic'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+import { lazy, Suspense, useMemo } from 'react'
+// import ListHeader from '@/components/layout/ListHeader'
+import { TextLoading } from '@/components/common/Loading'
 
 const dossierId = '7d2fc287-88f7-49b3-87a2-258c60a3d6ca'
+
+const ListHeader = dynamic(() => import('@/components/layout/ListHeader'), {
+  ssr: false,
+  loading: () => <Skeleton width={'70%'} height={50} />,
+})
+
+const CompoundDetailForm = dynamic(
+  () => import('@/components/compound/CompoundDetail'),
+  { ssr: false },
+)
+
+// const CompoundDetailForm = lazy(
+//   () => import('@/components/compound/CompoundDetail'),
+// )
 
 export default function CompoundDetailPage() {
   const router = useRouter()
   const { chemId } = router.query as { chemId: string }
   const {
     data: KOSHA_DATA,
-    isLoading: IsKoshaLoading,
+    isLoadingBasicInfo: KoshaBasicLoading,
+    isLoadingPhysicalProps: KoshaPhysicalLoading,
+    isLoadingToxicProps: KoshaToxicLoading,
     error,
   } = useCompoundData(chemId)
   const {
     data: IUCLID_DATA,
-    isLoadingBasicInfo,
-    isLoadingPhysicalProps,
-    isLoadingToxicProps,
+    isLoadingBasicInfo: IUCLIDBasicLoading,
+    isLoadingPhysicalProps: IUCLIDPhysicalLoading,
+    isLoadingToxicProps: IUCLIDToxicLoading,
   } = useIuclidCompound({
     dossierId,
   })
@@ -34,45 +53,48 @@ export default function CompoundDetailPage() {
 
   return (
     <Layout>
-      {IsKoshaLoading ? (
-        <TextLoading />
-      ) : (
-        <>
-          <ListHeader
-            renderType="compound"
-            pageTitle={
-              KOSHA_DATA?.basicInfo?.length > 1
-                ? `${KOSHA_DATA?.basicInfo[0].itemDetail} ; ${KOSHA_DATA?.basicInfo[1].itemDetail}`
-                : 'An error occurred. Please try again'
-            }
-          />
-          <Wrapper>
-            <CompoundWrapper>
-              <SourceName>
-                KOSHA
-                <small>
-                  (Korea Occupational Safety & Health Agency;
-                  한국산업안전보건공단)
-                </small>
-              </SourceName>
-              <CompoundDetailForm compoundData={KOSHA_DATA || defaultData} />
-            </CompoundWrapper>
-            <CompoundWrapper>
-              <SourceName>
-                ECHA<small>(European Chemicals Agency)</small> REACH Study
-                Results
-              </SourceName>
-              <CompoundDetailForm
-                compoundData={IUCLID_DATA || defaultData}
-                isLoadingBasicInfo={isLoadingBasicInfo}
-                isLoadingPhysicalProps={isLoadingPhysicalProps}
-                isLoadingToxicProps={isLoadingToxicProps}
-              />
-            </CompoundWrapper>
-          </Wrapper>
-        </>
-      )}
+      <ListHeader
+        renderType="compound"
+        pageTitle={
+          KoshaBasicLoading ? (
+            <Skeleton width={'70%'} height={50} />
+          ) : KOSHA_DATA?.basicInfo?.length > 1 ? (
+            `${KOSHA_DATA?.basicInfo[0].itemDetail} ; ${KOSHA_DATA?.basicInfo[1].itemDetail}`
+          ) : error ? (
+            'An error occurred. Please try again'
+          ) : (
+            ''
+          )
+        }
+      />
 
+      <Wrapper>
+        <CompoundWrapper>
+          <SourceName>
+            KOSHA
+            <small>
+              (Korea Occupational Safety & Health Agency; 한국산업안전보건공단)
+            </small>
+          </SourceName>
+          <CompoundDetailForm
+            compoundData={KOSHA_DATA || defaultData}
+            isLoadingBasicInfo={KoshaBasicLoading}
+            isLoadingPhysicalProps={KoshaPhysicalLoading}
+            isLoadingToxicProps={KoshaToxicLoading}
+          />
+        </CompoundWrapper>
+        <CompoundWrapper>
+          <SourceName>
+            ECHA<small>(European Chemicals Agency)</small> REACH Study Results
+          </SourceName>
+          <CompoundDetailForm
+            compoundData={IUCLID_DATA || defaultData}
+            isLoadingBasicInfo={IUCLIDBasicLoading}
+            isLoadingPhysicalProps={IUCLIDPhysicalLoading}
+            isLoadingToxicProps={IUCLIDToxicLoading}
+          />
+        </CompoundWrapper>
+      </Wrapper>
       {error && 'Error fetching data'}
     </Layout>
   )

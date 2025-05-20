@@ -67,13 +67,13 @@ export const ModalWrapper = styled.div`
   right: 0px;
   top: 40px;
   bottom: 0px;
-  background-color: royalblue;
+  background-color: rgb(246, 246, 246);
   border-radius: 4px;
   padding: 4px;
   gap: 10px;
   cursor: default;
   z-index: 1000;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.4);
 `
 
 export const ModalUtilWrapper = styled.div`
@@ -91,8 +91,9 @@ export const ModalTitle = styled.div`
   font-size: 18px;
   font-weight: 400;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-  color: #fff;
+  text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.1);
+  /* background-color: rgba(255, 255, 255, 0.4); */
+  color: royalblue;
 `
 
 export const ModalCloseBtn = styled.button`
@@ -108,11 +109,11 @@ export const ModalCloseBtn = styled.button`
   margin: 8px 0 8px 0;
   cursor: pointer;
   background-color: transparent;
-  color: #fff;
+  color: royalblue;
   transition: all 0.3s ease;
 
   &:hover {
-    color: black;
+    color: #22272b;
   }
 `
 
@@ -131,9 +132,9 @@ export const ModalItem = styled(Link)`
   margin-bottom: 5px;
   border-radius: 50%;
   font-size: 25px;
-  box-shadow: 0px 2px 7px rgba(0, 2, 61, 0.5);
+  box-shadow: 1px 2px 5px rgba(82, 124, 192, 0.5);
   /* border: 1px solid #f5f5f5?; */
-  background-color: #e6e6e6;
+  background-color: rgba(235, 243, 255, 0.53);
   cursor: pointer;
   align-items: center;
   justify-content: center;
@@ -141,7 +142,7 @@ export const ModalItem = styled(Link)`
 
   &:hover {
     transform: scale(1.2);
-    background-color: #fffde2;
+    background-color: rgb(255, 255, 255);
   }
 `
 
@@ -168,10 +169,10 @@ export const PostLink = styled.div`
   width: auto;
   height: 21px;
   font-size: 14px;
-  background-color: #eff0f0;
+  background-color: rgba(223, 225, 225, 0.68);
   color: #22272b;
   margin: 2px 8px 2px 0;
-  padding: 4px;
+  padding: 5px;
   cursor: text;
 
   overflow-x: scroll;
@@ -187,9 +188,9 @@ export const LinkCopyBtn = styled.button`
   height: auto;
   padding: 6px 8px;
   border-radius: 2px;
-  border: 1px solid #e6e6e6;
+  border: 2px solid royalblue;
   color: royalblue;
-  background-color: #e6e6e6;
+  background-color: #fff;
   font-weight: 600;
   outline: none;
   text-align: center;

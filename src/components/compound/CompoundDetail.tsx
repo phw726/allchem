@@ -1,6 +1,5 @@
 import * as S from './CompoundDetail.styles'
 import ListContent from '../layout/ListContent'
-import { CircleLoading } from '../common/Loading'
 
 export interface CompoundData {
   basicInfo?: { label?: string; itemDetail?: string[] | string }[]
@@ -24,23 +23,22 @@ export default function CompoundDetailForm({
       {compoundData && (
         <>
           <S.ContentTitle>1. Names and Identifiers</S.ContentTitle>
-          {isLoadingBasicInfo ? (
-            <CircleLoading />
-          ) : (
-            <ListContent data={compoundData.basicInfo} />
-          )}
+          <ListContent
+            data={compoundData.basicInfo}
+            isLoading={isLoadingBasicInfo}
+          />
+
           <S.ContentTitle>2. Chemical and Physical Properties</S.ContentTitle>
-          {isLoadingPhysicalProps ? (
-            <CircleLoading />
-          ) : (
-            <ListContent data={compoundData.physicalProps} />
-          )}
+          <ListContent
+            data={compoundData.physicalProps}
+            isLoading={isLoadingPhysicalProps}
+          />
+
           <S.ContentTitle>3. Toxicity</S.ContentTitle>
-          {isLoadingToxicProps ? (
-            <CircleLoading />
-          ) : (
-            <ListContent data={compoundData.toxicProps} />
-          )}
+          <ListContent
+            data={compoundData.toxicProps}
+            isLoading={isLoadingToxicProps}
+          />
         </>
       )}
     </S.Wrapper>

@@ -6,7 +6,7 @@ import SearchForm from '@/components/search/SearchForm'
 import Spacing from '@/components/common/Spacing'
 
 interface ListHeaderProps {
-  pageTitle: string
+  pageTitle: string | React.ReactElement
   renderType: 'compound' | 'post' // 렌더링 방식
 }
 

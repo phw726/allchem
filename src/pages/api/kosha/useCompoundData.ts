@@ -1,6 +1,6 @@
 /// 물질정보 api 3개 호출 ///
 
-import { useQuery } from '@tanstack/react-query'
+import { useQueries, useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { XMLParser } from 'fast-xml-parser'
 import { parseItemsByOrderIdx } from '../xmlParser'
@@ -60,33 +60,73 @@ const fetchMockData = async (chemId: string) => {
     toxicProps: mockToxicProps,
   }
 }
-
 export const useCompoundData = (chemId: string) => {
-  const query = useQuery({
-    queryKey: ['compoundData', chemId],
-
-    // 목데이터 사용
-    // queryFn: () => fetchMockData(chemId),
-    queryFn: () => fetchAllData(chemId),
-
-    select: data => {
-      return {
-        basicInfo: parseItemsByOrderIdx(data.basicInfo, BASIC_INFO_PROPS),
-        physicalProps: parseItemsByOrderIdx(data.physicalProps, PHYSICAL_PROPS),
-        toxicProps: parseItemsByOrderIdx(data.toxicProps, TOXIC_PROPS),
-      }
-    },
+  // ✅ 1. 먼저 `basicInfo` 실행 (가장 중요하고 먼저 로딩되어야 하는 데이터)
+  const basicInfoQuery = useQuery({
+    queryKey: ['basicInfo', chemId],
+    queryFn: () => fetchBasicInfo(chemId),
     enabled: !!chemId,
-    retry: 1,
+    staleTime: 1000 * 60 * 5, // 5분 동안 캐싱 유지
+  })
+
+  const physicalPropsQuery = useQuery({
+    queryKey: ['physicalProps', chemId],
+    queryFn: () => fetchPhysicalProps(chemId),
+    enabled: !!chemId,
+    staleTime: 1000 * 60 * 5, // 5분 동안 캐싱 유지
+  })
+
+  const toxicPropsQuery = useQuery({
+    queryKey: ['toxicProps', chemId],
+    queryFn: () => fetchToxicProps(chemId),
+    enabled: !!chemId,
+    staleTime: 1000 * 60 * 5, // 5분 동안 캐싱 유지
   })
 
   return {
-    data: query.data || {
-      basicInfo: [],
-      physicalProps: [],
-      toxicProps: [],
+    data: {
+      basicInfo:
+        parseItemsByOrderIdx(basicInfoQuery.data, BASIC_INFO_PROPS) || [],
+      physicalProps:
+        parseItemsByOrderIdx(physicalPropsQuery.data, PHYSICAL_PROPS) || [],
+      toxicProps: parseItemsByOrderIdx(toxicPropsQuery.data, TOXIC_PROPS) || [],
     },
-    isLoading: query.isLoading,
-    error: query.error,
+    isLoadingBasicInfo: basicInfoQuery.isLoading,
+    isLoadingPhysicalProps: physicalPropsQuery.isLoading,
+    isLoadingToxicProps: toxicPropsQuery.isLoading,
+    error:
+      basicInfoQuery.error || physicalPropsQuery.error || toxicPropsQuery.error,
   }
 }
+
+// export const useCompoundData = (chemId: string) => {
+//   const query = useQuery({
+//     queryKey: ['compoundData', chemId],
+
+//     // 목데이터 사용
+//     // queryFn: () => fetchMockData(chemId),
+//     queryFn: () => fetchAllData(chemId),
+
+//     select: data => {
+//       return {
+//         basicInfo: parseItemsByOrderIdx(data.basicInfo, BASIC_INFO_PROPS),
+//         physicalProps: parseItemsByOrderIdx(data.physicalProps, PHYSICAL_PROPS),
+//         toxicProps: parseItemsByOrderIdx(data.toxicProps, TOXIC_PROPS),
+//       }
+//     },
+//     enabled: !!chemId,
+//     retry: 1,
+//   })
+
+//   return {
+//     data: query.data || {
+//       basicInfo: [],
+//       physicalProps: [],
+//       toxicProps: [],
+//     },
+//     isLoadingBasicInfo: query.data.basicInfo.isLoading,
+//     isLoadingPhysicalProps: physicalPropsQuery.isLoading,
+//     isLoadingToxicProps: toxicPropsQuery.isLoading,
+//     error: query.error,
+//   }
+// }

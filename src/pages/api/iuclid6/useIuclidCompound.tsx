@@ -10,7 +10,13 @@ import { fetchStudyRecord } from './fetchIuclid6'
 import { getCodeValue } from '@/data/iuclid6/getCodeValue'
 import { parseToxicPropsNew } from '@/hooks/useIuclidMapping'
 
-export const useIuclidCompound = ({ dossierId }: { dossierId: string }) => {
+export const useIuclidCompound = ({
+  dossierId,
+  enabled = true,
+}: {
+  dossierId: string
+  enabled?: boolean
+}) => {
   // const { getCodeValue } = useCodeMapping()
 
   const queries = useQueries({
@@ -19,6 +25,7 @@ export const useIuclidCompound = ({ dossierId }: { dossierId: string }) => {
         queryKey: ['basicInfo', dossierId],
         queryFn: () => fetchStudyRecord(dossierId, 'basicInfo'),
         staleTime: 60000, // 1분 동안 캐싱
+        enabled: !!dossierId,
       },
       {
         queryKey: ['physicalProps', dossierId],
